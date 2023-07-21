@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "JUIVlFHtfEAej3UZv2YhUjVc7zDYf+3FZDMyCECPbSc=",
+  "Source": "PhotoLib.PhotoMicroService.API",
+  "BasePath": "_content/PhotoLib.PhotoMicroService.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

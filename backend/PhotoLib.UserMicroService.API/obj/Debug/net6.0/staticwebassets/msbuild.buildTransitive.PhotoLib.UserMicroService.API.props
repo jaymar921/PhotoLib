@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\PhotoLib.UserMicroService.API.props" />
+</Project>

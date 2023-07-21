@@ -20,7 +20,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoLib.PhotoMicroService.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoLib.SystemCore.Libraries", "PhotoLib.SystemCore.Libraries\PhotoLib.SystemCore.Libraries.csproj", "{22AE81EC-AF39-40BE-9DB2-7D56A8F3FF89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoLib.AuthMicroService.API", "PhotoLib.AuthMicroService.API\PhotoLib.AuthMicroService.API.csproj", "{01263638-5078-401C-B8A9-447867366DA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoLib.AuthMicroService.API", "PhotoLib.AuthMicroService.API\PhotoLib.AuthMicroService.API.csproj", "{01263638-5078-401C-B8A9-447867366DA2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{22AE81EC-AF39-40BE-9DB2-7D56A8F3FF89} = {22AE81EC-AF39-40BE-9DB2-7D56A8F3FF89}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoLib.SystemCore.Libraries.Tests", "PhotoLib.SystemCore.Libraries.Tests\PhotoLib.SystemCore.Libraries.Tests.csproj", "{F528AD60-FB39-43EA-9BC3-22B5BB14BA25}"
 	ProjectSection(ProjectDependencies) = postProject
 		{22AE81EC-AF39-40BE-9DB2-7D56A8F3FF89} = {22AE81EC-AF39-40BE-9DB2-7D56A8F3FF89}
 	EndProjectSection
@@ -51,6 +56,10 @@ Global
 		{01263638-5078-401C-B8A9-447867366DA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01263638-5078-401C-B8A9-447867366DA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01263638-5078-401C-B8A9-447867366DA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F528AD60-FB39-43EA-9BC3-22B5BB14BA25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F528AD60-FB39-43EA-9BC3-22B5BB14BA25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F528AD60-FB39-43EA-9BC3-22B5BB14BA25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F528AD60-FB39-43EA-9BC3-22B5BB14BA25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

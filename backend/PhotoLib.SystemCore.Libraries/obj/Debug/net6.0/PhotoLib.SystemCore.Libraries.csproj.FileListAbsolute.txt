@@ -1,0 +1,12 @@
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries\bin\Debug\net6.0\PhotoLib.SystemCore.Libraries.deps.json
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries\bin\Debug\net6.0\PhotoLib.SystemCore.Libraries.dll
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries\bin\Debug\net6.0\PhotoLib.SystemCore.Libraries.pdb
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.csproj.AssemblyReference.cache
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.GeneratedMSBuildEditorConfig.editorconfig
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.AssemblyInfoInputs.cache
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.AssemblyInfo.cs
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.csproj.CoreCompileInputs.cache
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.dll
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries\obj\Debug\net6.0\refint\PhotoLib.SystemCore.Libraries.dll
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.pdb
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries\obj\Debug\net6.0\ref\PhotoLib.SystemCore.Libraries.dll
