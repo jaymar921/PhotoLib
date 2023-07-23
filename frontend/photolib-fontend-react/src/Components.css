@@ -1,0 +1,378 @@
+/*
+    PROFILE-COMPONENT/CSS
+*/
+
+.Profile-Dashboard{
+    position: relative;
+    width: 100%;
+    height: 97vh;
+}
+.Profile-Container{
+    position: relative;
+    min-width: 300px;
+    width: 400px;
+    min-width: 300px;
+    min-height: 400px;
+    height: 100%;
+    background-color: #272727;
+}
+
+.Profile-Container .Profile-Image{
+    position: relative;
+    width: 255px;
+    height: 255px;
+    border-radius: 20px;
+    overflow: hidden;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.Profile-Container .Profile-Image img{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.Profile-Container .Profile-Info{
+    position: relative;
+    width: 100%;
+    text-align: center;
+}
+
+.Profile-Info .FullName{
+    font-size: 27px;
+    margin: 0;
+}
+
+.Profile-Info .Username{
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.Pronouns{
+    font-size: 18px;
+    font-weight: 500;
+    color: #848484;
+}
+
+.Profile-Info .Bio{
+    position: relative;
+    background-color: #1D1D1D;
+    font-size: 15px;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 15px;
+    border-radius: 2px;
+}
+
+.Bio .Bio-Details{
+    padding: 20px;
+}
+
+.Bio .Bio-Ind{
+    position: absolute;
+    top: -5px;
+    left: 5px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #727272;
+}
+
+.HR-Line{
+    width: 80%;
+    border: 2px solid #4D4D4D;
+}
+
+.Flex{
+    position: relative;
+    display: flex;
+    width: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.Flex > :nth-child(n){
+    margin: auto;
+}
+
+
+.Socials{
+    position: relative;
+    width: 100%;
+}
+
+.Socials-Container{
+    position: relative;
+    width: 100%;
+    height: 170px;
+    overflow-y: scroll;
+}
+
+.Social{
+    position: relative;
+    width: 50%;
+    height: 50px;
+    display: flex;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 5px;
+    
+}
+
+.Social > :nth-child(n){
+    margin: auto;
+}
+
+.Social .SocialIcon{
+    position: relative;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+}
+
+.Social .SocialIcon img{
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+.Social .Link{
+    position: relative;
+    width: 100px;
+    text-align: center;
+    color: white;
+    
+}
+
+.Link a{
+    position: relative;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.Profile-CopyLink{
+    position: relative;
+    text-align: center;
+}
+
+.flex-block{
+    display: flex;
+    height: 100%;
+}
+
+/*
+    ALBUM-COMPONENT CSS
+*/
+
+.dashboard-flexblock{
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.Album-Container{
+    position: relative;
+    width: 100%;
+    padding: 20px;
+}
+
+.Album-Container .Title{
+    font-size: 25px;
+    margin: 0;
+    font-weight: 500;
+}
+
+.Albums-List{
+    position: relative;
+    height: 340px;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
+.Album{
+    position: relative;
+    background-color: grey;
+    width: 300px;
+    height: 300px;
+    margin: 10px;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.Album .info {
+    position: absolute;
+    z-index: 5;
+    bottom: 1px;
+    padding: 0px 0px 5px 20px;
+    width: 275px;
+}
+
+.Album .info h2,
+.Album .info p{
+    margin: 5px;
+}
+
+.Album .info p{
+    font-size: 13px;
+    font-weight: 500;
+    color: #909090;
+}
+
+.Album img{
+    position: relative;
+    width: 300px;
+    height: 300px;
+    z-index: 2;
+}
+
+.Album .darkbg{
+    position: absolute;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.Album .selected{
+    position: absolute;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background: linear-gradient(to top, #2f2f2f, rgba(0,0,0,0));
+}
+
+.Album .info .ViewCounter{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    font-size: 20px;
+}
+
+/*
+    PHOTOS COMPONENT - CSS
+*/
+
+.Photos-Container{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #272727;
+    overflow-y: scroll;
+}
+
+.Photos-Container .Title .info h3{
+    font-size: 25px;
+    margin: 0;
+    font-weight: 500;
+}
+.Photos-Container .Title .info{
+    padding: 20px;
+}
+
+.Photos-Container .Title .info p{
+    font-size: 15px;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.date{
+    position: relative;
+    color: #909090;
+    margin: 0;
+}
+
+.Photos-Container .Photos-List{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 100%;
+    white-space: pre-wrap;
+}
+
+.Photos-List .Photo{
+    position: relative;
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    background-color: #1D1D1D;
+    margin: 5px;
+    overflow: hidden;
+}
+
+.Photo .Image-Container,
+.Album .Image-Container{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.Image-Container img{
+    height: 150%;
+}
+
+
+
+
+
+/*
+    Mobile Responsive
+*/
+
+@media only screen and (min-width: 500px){
+    .Profile-CopyLink{
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .Photos-Container{
+        margin: 20px;
+    }
+
+    .Photos-Container .Title .info .date{
+        position: absolute;
+        top: 23px;
+        right: 30px;
+    }
+}
+
+@media only screen and (max-width: 500px){
+    .Profile-Container, .Profile-Dashboard{
+        height: fit-content;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .Social{
+        width: 60%;
+        height: 50px;
+    }
+
+    .Socials-Container{
+        height: 100%;
+    }
+
+    .flex-block{
+        display: block;
+    }
+
+    .Photos-List .Photo{
+        display: flex;
+        min-width: 250px;
+        min-height: 250px;
+        margin-top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
