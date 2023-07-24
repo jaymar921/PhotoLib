@@ -1,8 +1,3 @@
-D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.Tests.csproj.AssemblyReference.cache
-D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.Tests.GeneratedMSBuildEditorConfig.editorconfig
-D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.Tests.AssemblyInfoInputs.cache
-D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.Tests.AssemblyInfo.cs
-D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.Tests.csproj.CoreCompileInputs.cache
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\bin\Debug\net6.0\CoverletSourceRootsMapping
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\bin\Debug\net6.0\testhost.dll
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\bin\Debug\net6.0\testhost.exe
@@ -94,6 +89,11 @@ D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\bin\De
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\bin\Debug\net6.0\zh-Hant\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\bin\Debug\net6.0\PhotoLib.SystemCore.Libraries.dll
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\bin\Debug\net6.0\PhotoLib.SystemCore.Libraries.pdb
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.Tests.csproj.AssemblyReference.cache
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.Tests.GeneratedMSBuildEditorConfig.editorconfig
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.Tests.AssemblyInfoInputs.cache
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.Tests.AssemblyInfo.cs
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.Tests.csproj.CoreCompileInputs.cache
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.Tests.csproj.CopyComplete
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\PhotoLib.SystemCore.Libraries.Tests.dll
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.SystemCore.Libraries.Tests\obj\Debug\net6.0\refint\PhotoLib.SystemCore.Libraries.Tests.dll
