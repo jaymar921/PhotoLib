@@ -7,8 +7,8 @@ namespace PhotoLib.SystemCore.Libraries.Models
         public Guid UserID { get; set; }
         public string Firstname { get; set; } = string.Empty;
         public string Lastname { get; set; } = string.Empty;
-        public string Username { get; private set; } = string.Empty;
-        public string Password { get; private set; } = string.Empty;
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Bio { get; set; } = string.Empty;
         public string Pronouns { get; set; } = string.Empty;
@@ -16,9 +16,9 @@ namespace PhotoLib.SystemCore.Libraries.Models
         public string Country { get; set; } = string.Empty;
         public int Views { get; set; }
         public bool IsPublic { get; set; }
-        public DateTime DateCreated { get; private set; }
+        public DateTime DateCreated { get; set; }
         public DateTime DateLastModified { get; set; }
-        public string Remark { get; private set; } = string.Empty;
+        public string Remark { get; set; } = string.Empty;
 
         public UserModel(User user)
         {
