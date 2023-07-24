@@ -9,7 +9,6 @@ namespace PhotoLib.AuthMicroService.API.Data.UserRepository
         public UserDBContext(DbContextOptions<UserDBContext> options, ILogger<UserDBContext> logger) : base(options) 
         {
             _logger = logger;
-            Clear();
         }
 
         public void Initialize()

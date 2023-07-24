@@ -18,7 +18,7 @@ namespace PhotoLib.AuthMicroService.API.Data
 
         public Auth GetAuth(Guid Token)
         {
-            return auths.FirstOrDefault(a => a.Id == Token || a.TokenID == Token) ?? new Auth(Token, Token, DateTime.Now, new TimeSpan(0,0,-1));
+            return auths.FirstOrDefault(a => a.Id == Token || a.TokenID == Token) ?? new Auth(Token, Token, DateTime.Now, new TimeSpan(-1,-1,-1));
         }
 
         public void RevokeAuth(Guid guid)

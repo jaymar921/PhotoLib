@@ -17,7 +17,7 @@
 
         public bool IsExpired()
         {
-            return DateTime.Now < DateIssued + Expiry;
+            return DateTime.Now > DateIssued + Expiry;
         }
 
         public DateTime GetExpiry() => DateIssued + Expiry;

@@ -26,13 +26,7 @@ namespace PhotoLib.AuthMicroService.API.Data.UserRepository
 
         public bool Delete(Guid guid)
         {
-            User user = Get(guid);
-
-            if (user.Guid == Guid.Empty) return false;
-
-            _dbContext.Users.Remove(user);
-            _dbContext.SaveChanges();
-            return true;
+            return Delete(Get(guid));
         }
 
         public bool Delete(User entity)
@@ -40,8 +34,19 @@ namespace PhotoLib.AuthMicroService.API.Data.UserRepository
             User user = Get(entity.Guid);
 
             if (user.Guid == Guid.Empty) return false;
+           
+            var userInfo = _dbContext.UserInformation.FirstOrDefault(u => u.Guid == user.Guid);
+            var userState = _dbContext.UserState.FirstOrDefault(u => u.Guid == user.Guid);
 
+            // remove the info and the state first
+            if(userInfo != null)
+                _dbContext.UserInformation.Remove(userInfo);
+            if (userState != null)
+                _dbContext.UserState.Remove(userState);
+
+            // remove the actual entity
             _dbContext.Users.Remove(entity);
+
             _dbContext.SaveChanges();
             return true;
         }
@@ -75,8 +80,8 @@ namespace PhotoLib.AuthMicroService.API.Data.UserRepository
 
         public bool Update(User entity)
         {
-            _dbContext.Users.Update(entity);
-            _dbContext.SaveChanges(true);
+            _dbContext.Update(entity);
+            _dbContext.SaveChanges();
             return true;
         }
     }
