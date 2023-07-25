@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhotoLib.AuthMicroService.API.Data.UserRepository;
 
@@ -10,9 +11,11 @@ using PhotoLib.AuthMicroService.API.Data.UserRepository;
 namespace PhotoLib.AuthMicroService.API.Migrations
 {
     [DbContext(typeof(UserDBContext))]
-    partial class UserDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230725091051_Fourth Migration")]
+    partial class FourthMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
@@ -93,9 +96,6 @@ namespace PhotoLib.AuthMicroService.API.Migrations
 
                     b.Property<string>("Platform")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UserID")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid?>("UserInformationGuid")

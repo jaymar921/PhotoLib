@@ -1,6 +1,5 @@
 ﻿using PhotoLib.SystemCore.Libraries.Entity;
 using PhotoLib.SystemCore.Libraries.Interfaces;
-using System;
 using System.Collections.Immutable;
 
 namespace PhotoLib.AuthMicroService.API.Data.UserRepository
@@ -20,6 +19,7 @@ namespace PhotoLib.AuthMicroService.API.Data.UserRepository
             _dbContext.Users.Add(entity);
             _dbContext.UserState.Add(entity.UserState);
             _dbContext.UserInformation.Add(entity.UserInformation);
+            entity.UserInformation.Socials.ToList().ForEach(s => _dbContext.UserSocials.Add(s));
             _dbContext.SaveChanges();
             return true;
         }
@@ -38,16 +38,17 @@ namespace PhotoLib.AuthMicroService.API.Data.UserRepository
             var userInfo = _dbContext.UserInformation.FirstOrDefault(u => u.Guid == user.Guid);
             var userState = _dbContext.UserState.FirstOrDefault(u => u.Guid == user.Guid);
 
-            // remove the info and the state first
-            if(userInfo != null)
-                _dbContext.UserInformation.Remove(userInfo);
-            if (userState != null)
-                _dbContext.UserState.Remove(userState);
-
             // remove the actual entity
-            _dbContext.Users.Remove(entity);
+            _dbContext.Remove(entity);
 
-            _dbContext.SaveChanges();
+            try
+            {
+                _dbContext.SaveChanges();
+            }
+            catch
+            {
+                return false;
+            }
             return true;
         }
 
@@ -59,6 +60,10 @@ namespace PhotoLib.AuthMicroService.API.Data.UserRepository
             foreach (User user in _dbContext.Users)
             {
                 user.UserInformation = _dbContext.UserInformation.FirstOrDefault(u => u.Guid == user.Guid) ?? new UserInformation();
+
+                // calling the UserSocial to load the data
+                _dbContext.UserSocials.Where(u => u.UserID == user.Guid).ToList();
+
                 user.UserState = _dbContext.UserState.FirstOrDefault(u => u.Guid == user.Guid) ?? new UserState();
             }
             return _dbContext.Users.ToImmutableList();
@@ -73,6 +78,8 @@ namespace PhotoLib.AuthMicroService.API.Data.UserRepository
             }
 
             user.UserInformation = _dbContext.UserInformation.First(u => u.Guid == user.Guid);
+            // calling the UserSocial to load the data
+            _dbContext.UserSocials.Where(u => u.UserID == user.Guid).ToList();
             user.UserState = _dbContext.UserState.First(u => u.Guid == user.Guid);
 
             return user;
@@ -81,6 +88,14 @@ namespace PhotoLib.AuthMicroService.API.Data.UserRepository
         public bool Update(User entity)
         {
             _dbContext.Update(entity);
+            // calling the UserSocial to load the data
+
+            entity.UserInformation.Socials.ToList().ForEach(s => {
+                var objectExist = _dbContext.UserSocials.Any(e => e.Guid == s.Guid);
+                if(!objectExist)
+                    _dbContext.UserSocials.Add(s);
+            });
+
             _dbContext.SaveChanges();
             return true;
         }

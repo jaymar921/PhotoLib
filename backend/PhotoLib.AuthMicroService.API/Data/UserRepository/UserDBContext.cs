@@ -29,5 +29,6 @@ namespace PhotoLib.AuthMicroService.API.Data.UserRepository
         public DbSet<User> Users { get; set; }
         public DbSet<UserInformation> UserInformation { get; set; }
         public DbSet<UserState> UserState { get; set; }
+        public DbSet<UserSocial> UserSocials { get; set; }
     }
 }

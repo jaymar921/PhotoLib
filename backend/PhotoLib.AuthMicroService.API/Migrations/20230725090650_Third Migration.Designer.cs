@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhotoLib.AuthMicroService.API.Data.UserRepository;
 
@@ -10,9 +11,11 @@ using PhotoLib.AuthMicroService.API.Data.UserRepository;
 namespace PhotoLib.AuthMicroService.API.Migrations
 {
     [DbContext(typeof(UserDBContext))]
-    partial class UserDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230725090650_Third Migration")]
+    partial class ThirdMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
@@ -95,9 +98,6 @@ namespace PhotoLib.AuthMicroService.API.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("UserID")
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid?>("UserInformationGuid")
                         .HasColumnType("TEXT");
 
@@ -105,7 +105,7 @@ namespace PhotoLib.AuthMicroService.API.Migrations
 
                     b.HasIndex("UserInformationGuid");
 
-                    b.ToTable("UserSocials");
+                    b.ToTable("UserSocial");
                 });
 
             modelBuilder.Entity("PhotoLib.SystemCore.Libraries.Entity.UserState", b =>

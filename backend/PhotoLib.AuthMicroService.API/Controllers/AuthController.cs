@@ -43,7 +43,7 @@ namespace PhotoLib.AuthMicroService.API.Controllers
                 if(user.Username == Username && user.Password.CompareSHA256Password(SHA256Password))
                 {
                     // generate token
-                    Auth auth = authFactory.Create();
+                    Auth auth = authFactory.Create(new TimeSpan(1,0,0));
 
                     // save session
                     dataHandler.SaveSession(auth);

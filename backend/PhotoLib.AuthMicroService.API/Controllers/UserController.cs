@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using PhotoLib.AuthMicroService.API.Builder;
 using PhotoLib.AuthMicroService.API.Data;
+using PhotoLib.AuthMicroService.API.Data.UserClasses;
 using PhotoLib.AuthMicroService.API.Utils;
+using PhotoLib.SystemCore.Libraries.DTO;
 using PhotoLib.SystemCore.Libraries.Entity;
+using PhotoLib.SystemCore.Libraries.Helper;
 using PhotoLib.SystemCore.Libraries.Interfaces;
 using PhotoLib.SystemCore.Libraries.Models;
 
@@ -26,8 +29,7 @@ namespace PhotoLib.AuthMicroService.API.Controllers
         }
 
         [HttpPost]
-        [Route("Register")]
-        public IActionResult RegisterUser(UserModel model)
+        public IActionResult RegisterUser(FullUserDTO model)
         {
 
             
@@ -62,6 +64,8 @@ namespace PhotoLib.AuthMicroService.API.Controllers
                 .SetViews(0)
                 .SetIsPublic(model.IsPublic);
 
+            model.Socials.ToList().ForEach(s => userBuilder.AddSocial(new UserSocial { Guid = Guid.NewGuid(), UserID = userBuilder.GetObject().Guid, Link = s.Link, Platform = s.Platform }));
+
             var user = userBuilder.GetObject();
             user.UserState.DateCreated = DateTime.Now;
             user.UserState.Remark = "Account Created";
@@ -73,36 +77,52 @@ namespace PhotoLib.AuthMicroService.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateUser(UserModel model)
+        public IActionResult UpdateUser(UserDTO model)
         {
+            bool UsernameInHeader = Request.Headers.TryGetValue("Username", out var Username);
+            bool AuthToken = Request.Headers.TryGetValue("AuthToken", out var authToken);
 
+            if (!AuthToken)
+                return Unauthorized(new { Message = "Provide an Authentication Token" });
+
+            if (!UsernameInHeader)
+                return BadRequest(new { Message = "Please specify Username at the header of the request" });
 
             if (!ModelState.IsValid)
             {
                 return Ok(new { Message = "Invalid Object" });
             }
 
-            var user = Repository.Get(model.UserID);
+            var session = Session.GetAuth(Guid.Parse(authToken.ToString()));
+
+            if (session.IsExpired())
+                return Unauthorized(new { Message = "Authentication Token has been expired" });
+
+            var user = Repository.GetUser(Username.ToString());
             // check if user exists
-            if (user.Guid == Guid.Empty)
+            if (user == null)
             {
                 return NotFound(new { Message = "No data found" });
             }
 
             // rebuild the user data from the existing data
 
+            List<UserSocial> userSocials = new List<UserSocial>();
+            model.Socials.ToList().ForEach(s =>
+            {
+                userSocials.Add(new UserSocial { Link = s.Link, Platform = s.Platform });
+            });
+
             UserBuilder userBuilder = new UserBuilder(user);
             userBuilder.SetFirstname(model.Firstname)
                 .SetLastname(model.Lastname)
-                .SetUsername(model.Username)
-                .SetPassword(model.Password)
-                .SetEmail(model.Email)
                 .SetBio(model.Bio)
                 .SetPronouns(model.Pronouns)
                 .SetCountry(model.Country)
-                .SetViews(model.Views)
-                .SetIsPublic(model.IsPublic);
+                .SetIsPublic(model.IsPublic)
+                .UpdateSocial(userSocials.ToArray());
 
+            
             user.UserState.DateLastModified = DateTime.Now;
             user.UserState.Remark = "Update Account";
 
@@ -124,9 +144,8 @@ namespace PhotoLib.AuthMicroService.API.Controllers
                 return Conflict(new { Message = "Please specify 'Username' at the header of the request" });
 
             var session = Session.GetAuth(Guid.Parse(authToken.ToString()));
-            bool SessionExpired = Session.GetAuth(Guid.Parse(authToken.ToString())).IsExpired();
 
-            if (SessionExpired)
+            if (session.IsExpired())
                 return Unauthorized(new { Message = "Authentication Token has been expired" });
 
             var UserData = Repository.GetUser(username.ToString());
@@ -134,8 +153,62 @@ namespace PhotoLib.AuthMicroService.API.Controllers
             if (UserData == null)
                 return NotFound(new { Message = "User not found" });
 
-            Repository.Delete(UserData);
-            return Ok(new { Message = "Account Deleted" });
+            bool stat = Repository.Delete(UserData);
+            return Ok(new { Message = stat?"Account Deleted":"Failed to delete account" });
+        }
+
+        [HttpPut]
+        [Route("Credentials")]
+        public IActionResult UpdateUserCredentials(UserCredsDTO userCredentials)
+        {
+            bool tokenHeader = Request.Headers.TryGetValue("AuthToken", out var token);
+
+            if (!tokenHeader)
+                return Unauthorized(new { Message = "Unauthorized, you need an AuthToken for this request. " });
+
+            var session = Session.GetAuth(Guid.Parse(token.ToString()));
+
+            if (session.IsExpired())
+                return Unauthorized(new { Message = "Authentication Token provided has already been expired." });
+
+            if(!ModelState.IsValid)
+                return BadRequest(new {Message = "Invalid object payload. "});
+
+            User? user = Repository.GetUser(userCredentials.UserName);
+
+            if (user == null) return NotFound(new { Message = "Username not found." });
+
+            user.Password = userCredentials.Password.Sha256Compute();
+            if(user.Email != userCredentials.Email && !string.IsNullOrEmpty(userCredentials.Email))
+                user.Email = userCredentials.Email;
+
+            Repository.Update(user);
+            return Ok(new {Message = "Account credentials was updated"});
+        }
+
+        [HttpGet]
+        [Route("Credentials")]
+        public IActionResult GetUserCredentials()
+        {
+            bool tokenHeader = Request.Headers.TryGetValue("AuthToken", out var token);
+            bool usernameHeader = Request.Headers.TryGetValue("Username", out var username);
+
+            if (!tokenHeader)
+                return Unauthorized(new { Message = "Unauthorized, you need an AuthToken for this request. " });
+
+            var session = Session.GetAuth(Guid.Parse(token.ToString()));
+
+            if (session.IsExpired())
+                return Unauthorized(new { Message = "Authentication Token provided has already been expired." });
+
+            if (!usernameHeader)
+                return BadRequest(new { Message = "Username does not exists in the header of the request" });
+
+            User? user = Repository.GetUser(username.ToString());
+
+            if (user == null) return NotFound(new { Message = "Username not found." });
+
+            return Ok(new UserCredsDTO { UserName = user.Username, Password = (user.Username+user.Password).Sha256Compute(), Email = user.Email });
         }
 
         [HttpGet]
@@ -156,7 +229,15 @@ namespace PhotoLib.AuthMicroService.API.Controllers
             if(user == null)
                 return NotFound(new { Message = "Username specified was not found", StatusCode = 404 });
 
-            return Ok(new {User=user, Message = "Retrieved User info", StatusCode = 200});
+            UserBuilder userBuilder = new UserBuilder(user);
+            userBuilder.IncrementViews();
+
+            // save it to the repository
+            Repository.Update(user);
+
+            var userDTO = new UserModel(user).ParseDTO();
+
+            return Ok(new {User= userDTO, Message = "Retrieved User info", StatusCode = 200});
         }
     }
 }

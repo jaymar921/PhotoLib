@@ -74,18 +74,34 @@ namespace PhotoLib.AuthMicroService.API.Builder
 
         public UserBuilder AddSocial(UserSocial social)
         {
-            User.UserInformation.Socials.Append(social);
+            social.UserID = User.Guid;
+            social.Guid = Guid.NewGuid();
+
+            List<UserSocial> socialsList = (List<UserSocial>)User.UserInformation.Socials;
+            socialsList.Add(social);
+
+            User.UserInformation.Socials = socialsList;
             return this;
         }
 
-        public UserBuilder UpdateSocial(UserSocial social)
+        public UserBuilder UpdateSocial(params UserSocial[] socials)
         {
-            UserSocial? s = User.UserInformation.Socials.FirstOrDefault(x => x.Guid == social.Guid);
-            if (s != null)
+            var userSocialsDt = User.UserInformation.Socials;
+            foreach (UserSocial social in socials)
             {
-                s.Platform = social.Platform;
-                s.Link = social.Link;
+                UserSocial? s = userSocialsDt.FirstOrDefault(x => x.Platform == social.Platform || x.Link == social.Link);
+                if (s != null)
+                {
+                    userSocialsDt.Remove(s);
+                    AddSocial(social);
+                }
+                else
+                {
+                    AddSocial(social);
+                }
             }
+            
+            
             return this;
         }
 
