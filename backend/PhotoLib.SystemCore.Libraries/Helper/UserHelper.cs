@@ -9,11 +9,10 @@ namespace PhotoLib.SystemCore.Libraries.Helper
         public static UserModel ParseModel(this UserDTO userDTO)
         {
             List<UserSocialModel> socialModels = new List<UserSocialModel>();
-            userDTO.Socials.ToList().ForEach(userDTO => socialModels.Add(userDTO));
+            userDTO.Socials.ToList().ForEach(userDTO => socialModels.Add(new UserSocialModel(Guid.NewGuid(), userDTO.Platform, userDTO.Link)));
             
             return new UserModel
             {
-                UserID = userDTO.UserID,
                 Firstname = userDTO.Firstname,
                 Lastname = userDTO.Lastname,
                 Bio = userDTO.Bio,
@@ -28,13 +27,14 @@ namespace PhotoLib.SystemCore.Libraries.Helper
 
         public static UserDTO ParseDTO(this UserModel model)
         {
+            List<UserSocialDTO> socialDTOs = new List<UserSocialDTO>();
+            model.Socials().ToList().ForEach(social => socialDTOs.Add(new UserSocialDTO { Link = social.GetLink(), Platform = social.GetPlatform() }));
             return new UserDTO(
-                    model.UserID,
                     model.Firstname,
-                    model.Firstname,
+                    model.Lastname,
                     model.Bio,
                     model.Pronouns,
-                    model.Socials().ToImmutableList(),
+                    socialDTOs.ToList().ToImmutableList(),
                     model.Country,
                     model.DateCreated,
                     model.Views,

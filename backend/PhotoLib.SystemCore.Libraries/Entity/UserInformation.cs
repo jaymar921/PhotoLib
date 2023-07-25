@@ -11,13 +11,11 @@ namespace PhotoLib.SystemCore.Libraries.Entity
         public string Lastname { get; set; } = string.Empty;
         public string Bio { get; set; } = string.Empty;
         public string Pronouns { get; set; } = string.Empty;
-        public IEnumerable<UserSocial> Socials { get; set; }
+        public virtual ICollection<UserSocial> Socials { get; set; } = new List<UserSocial>();
         public string Country { get; set; } = string.Empty; 
         
         // Required for EF Core
         public UserInformation() 
-        {
-            Socials = new List<UserSocial>();
-        }    
+        { }    
     }
 }

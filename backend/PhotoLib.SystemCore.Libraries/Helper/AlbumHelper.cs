@@ -9,7 +9,6 @@ namespace PhotoLib.SystemCore.Libraries.Helper
         {
             return new AlbumModel
             {
-                AlbumID = albumDTO.AlbumID,
                 UserID = albumDTO.UserID,
                 DateCreated = albumDTO.DateCreated,
                 DateLasstModified = albumDTO.DateLastModified,
@@ -22,7 +21,7 @@ namespace PhotoLib.SystemCore.Libraries.Helper
 
         public static AlbumDTO ParseDTO(this AlbumModel model)
         {
-            return new AlbumDTO(model.AlbumID, model.UserID, model.DateCreated, model.DateLasstModified, model.Title, model.Description, model.Views, model.IsPublic);
+            return new AlbumDTO(model.UserID, model.DateCreated, model.DateLasstModified, model.Title, model.Description, model.Views, model.IsPublic);
         }
     }
 }

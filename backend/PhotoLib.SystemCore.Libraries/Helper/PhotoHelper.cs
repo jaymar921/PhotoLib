@@ -9,7 +9,6 @@ namespace PhotoLib.SystemCore.Libraries.Helper
         {
             return new PhotoModel()
             {
-                PhotoId = photoDTO.PhotoID,
                 AlbumId = photoDTO.AlbumID,
                 Caption = photoDTO.Caption,
                 DateCreated = photoDTO.DateCreated,
@@ -19,7 +18,7 @@ namespace PhotoLib.SystemCore.Libraries.Helper
 
         public static PhotoDTO ParseDTO(this PhotoModel model)
         {
-            return new PhotoDTO(model.PhotoId, model.AlbumId, model.Caption, model.DateCreated, model.Views);
+            return new PhotoDTO(model.AlbumId, model.Caption, model.DateCreated, model.Views);
         }
     }
 }
