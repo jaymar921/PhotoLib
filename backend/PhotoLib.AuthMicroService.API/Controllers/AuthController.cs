@@ -25,6 +25,19 @@ namespace PhotoLib.AuthMicroService.API.Controllers
             authFactory = new AuthFactory();
         }
 
+        [HttpGet]
+        public IActionResult Get()
+        {
+            if (!Request.Headers.TryGetValue("AuthToken", out var authToken))
+                return BadRequest(new { Message = "Authentication Token is required" });
+
+            Guid.TryParse(authToken.ToString(), out var guid);
+
+            Auth auth = dataHandler.GetAuth(guid);
+
+            return Ok(new {AuthToken = auth.TokenID, Expired = auth.IsExpired(), ValidDate = auth.GetExpiry(), UserRequested = auth.Username});
+        }
+
         [HttpPost]
         public IActionResult Post()
         {
@@ -42,11 +55,22 @@ namespace PhotoLib.AuthMicroService.API.Controllers
             foreach(User user in userRepository.Get().ToList()){
                 if(user.Username == Username && user.Password.CompareSHA256Password(SHA256Password))
                 {
-                    // generate token
-                    Auth auth = authFactory.Create(new TimeSpan(1,0,0));
+                    // check if a token exists
+                    Auth auth = dataHandler.GetAuthByUser(user.Username);
+                    
+                    // generate token if expired
+                    if(auth.IsExpired())
+                    {
+                        // revoke the old auth token
+                        dataHandler.RevokeAuth(auth.Id);
 
-                    // save session
-                    dataHandler.SaveSession(auth);
+                        // create a new auth token
+                        auth = authFactory.Create(new TimeSpan(1, 0, 0));
+                        auth.Username = user.Username;
+
+                        // save session
+                        dataHandler.SaveSession(auth);
+                    }
 
                     // create authorization
                     AuthModel authorizedSession = new AuthModel { AuthToken = auth.TokenID, SessionExpiration = auth.GetExpiry(), StatusCode = 200 };
