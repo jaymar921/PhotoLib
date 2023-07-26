@@ -11,6 +11,7 @@
           "Microsoft.EntityFrameworkCore.Design": "7.0.9",
           "Microsoft.EntityFrameworkCore.Sqlite": "7.0.9",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.9",
+          "PhotoLib.SystemCore.Libraries": "1.0.0",
           "Swashbuckle.AspNetCore": "6.2.3"
         },
         "runtime": {
@@ -474,6 +475,11 @@
             "fileVersion": "7.0.22.51805"
           }
         }
+      },
+      "PhotoLib.SystemCore.Libraries/1.0.0": {
+        "runtime": {
+          "PhotoLib.SystemCore.Libraries.dll": {}
+        }
       }
     }
   },
@@ -734,6 +740,11 @@
       "sha512": "sha512-DaGSsVqKsn/ia6RG8frjwmJonfos0srquhw09TlT8KRw5I43E+4gs+/bZj4K0vShJ5H9imCuXupb4RmS+dBy3w==",
       "path": "system.text.json/7.0.0",
       "hashPath": "system.text.json.7.0.0.nupkg.sha512"
+    },
+    "PhotoLib.SystemCore.Libraries/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

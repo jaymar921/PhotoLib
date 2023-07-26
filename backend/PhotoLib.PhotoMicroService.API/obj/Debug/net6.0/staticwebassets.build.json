@@ -1,11 +1,88 @@
 {
   "Version": 1,
-  "Hash": "JUIVlFHtfEAej3UZv2YhUjVc7zDYf+3FZDMyCECPbSc=",
+  "Hash": "sOdWnfpknp6gon8VLPJlqG+m5d4Jh24R7gyPucCcgOw=",
   "Source": "PhotoLib.PhotoMicroService.API",
   "BasePath": "_content/PhotoLib.PhotoMicroService.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "PhotoLib.PhotoMicroService.API\\wwwroot",
+      "Source": "PhotoLib.PhotoMicroService.API",
+      "ContentRoot": "D:\\Work Stuff\\Coding\\PhotoLib\\backend\\PhotoLib.PhotoMicroService.API\\wwwroot\\",
+      "BasePath": "_content/PhotoLib.PhotoMicroService.API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\Work Stuff\\Coding\\PhotoLib\\backend\\PhotoLib.PhotoMicroService.API\\wwwroot\\Images\\profile\\00000000-0000-0000-0000-000000000000\\068af7ea-61cb-4ffb-ad64-f4dcc3a5cb99.jpg",
+      "SourceId": "PhotoLib.PhotoMicroService.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Work Stuff\\Coding\\PhotoLib\\backend\\PhotoLib.PhotoMicroService.API\\wwwroot\\",
+      "BasePath": "_content/PhotoLib.PhotoMicroService.API",
+      "RelativePath": "Images/profile/00000000-0000-0000-0000-000000000000/068af7ea-61cb-4ffb-ad64-f4dcc3a5cb99.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\profile\\00000000-0000-0000-0000-000000000000\\068af7ea-61cb-4ffb-ad64-f4dcc3a5cb99.jpg"
+    },
+    {
+      "Identity": "D:\\Work Stuff\\Coding\\PhotoLib\\backend\\PhotoLib.PhotoMicroService.API\\wwwroot\\Images\\profile\\00000000-0000-0000-0000-000000000000\\48172ef0-bea2-4e6b-ba6f-9bb8335ad970.jpg",
+      "SourceId": "PhotoLib.PhotoMicroService.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Work Stuff\\Coding\\PhotoLib\\backend\\PhotoLib.PhotoMicroService.API\\wwwroot\\",
+      "BasePath": "_content/PhotoLib.PhotoMicroService.API",
+      "RelativePath": "Images/profile/00000000-0000-0000-0000-000000000000/48172ef0-bea2-4e6b-ba6f-9bb8335ad970.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\profile\\00000000-0000-0000-0000-000000000000\\48172ef0-bea2-4e6b-ba6f-9bb8335ad970.jpg"
+    },
+    {
+      "Identity": "D:\\Work Stuff\\Coding\\PhotoLib\\backend\\PhotoLib.PhotoMicroService.API\\wwwroot\\Images\\profile\\00000000-0000-0000-0000-000000000000\\b7b03660-248d-42fb-a586-696271f8f6f2.jpg",
+      "SourceId": "PhotoLib.PhotoMicroService.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Work Stuff\\Coding\\PhotoLib\\backend\\PhotoLib.PhotoMicroService.API\\wwwroot\\",
+      "BasePath": "_content/PhotoLib.PhotoMicroService.API",
+      "RelativePath": "Images/profile/00000000-0000-0000-0000-000000000000/b7b03660-248d-42fb-a586-696271f8f6f2.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\profile\\00000000-0000-0000-0000-000000000000\\b7b03660-248d-42fb-a586-696271f8f6f2.jpg"
+    },
+    {
+      "Identity": "D:\\Work Stuff\\Coding\\PhotoLib\\backend\\PhotoLib.PhotoMicroService.API\\wwwroot\\Images\\profile\\00000000-0000-0000-0000-000000000000\\ee26ecbf-7cf6-45bb-861a-3bbd8ef807e2.jpg",
+      "SourceId": "PhotoLib.PhotoMicroService.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Work Stuff\\Coding\\PhotoLib\\backend\\PhotoLib.PhotoMicroService.API\\wwwroot\\",
+      "BasePath": "_content/PhotoLib.PhotoMicroService.API",
+      "RelativePath": "Images/profile/00000000-0000-0000-0000-000000000000/ee26ecbf-7cf6-45bb-861a-3bbd8ef807e2.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\profile\\00000000-0000-0000-0000-000000000000\\ee26ecbf-7cf6-45bb-861a-3bbd8ef807e2.jpg"
+    }
+  ]
 }

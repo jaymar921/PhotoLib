@@ -1,5 +1,6 @@
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\bin\Debug\net6.0\appsettings.Development.json
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\bin\Debug\net6.0\appsettings.json
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\bin\Debug\net6.0\PhotoLib.PhotoMicroService.API.staticwebassets.runtime.json
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\bin\Debug\net6.0\PhotoLib.PhotoMicroService.API.exe
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\bin\Debug\net6.0\PhotoLib.PhotoMicroService.API.deps.json
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\bin\Debug\net6.0\PhotoLib.PhotoMicroService.API.runtimeconfig.json
@@ -57,6 +58,8 @@ D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\bin\Debug\n
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\bin\Debug\net6.0\runtimes\win-x64\native\e_sqlite3.dll
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\bin\Debug\net6.0\runtimes\win-x86\native\e_sqlite3.dll
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\bin\Debug\net6.0\PhotoLib.SystemCore.Libraries.dll
+D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\bin\Debug\net6.0\PhotoLib.SystemCore.Libraries.pdb
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\obj\Debug\net6.0\PhotoLib.PhotoMicroService.API.csproj.AssemblyReference.cache
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\obj\Debug\net6.0\PhotoLib.PhotoMicroService.API.GeneratedMSBuildEditorConfig.editorconfig
 D:\Work Stuff\Coding\PhotoLib\backend\PhotoLib.PhotoMicroService.API\obj\Debug\net6.0\PhotoLib.PhotoMicroService.API.AssemblyInfoInputs.cache

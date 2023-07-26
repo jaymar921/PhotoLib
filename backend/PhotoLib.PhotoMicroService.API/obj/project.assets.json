@@ -673,6 +673,16 @@
         "build": {
           "buildTransitive/net6.0/System.Text.Json.targets": {}
         }
+      },
+      "PhotoLib.SystemCore.Libraries/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/PhotoLib.SystemCore.Libraries.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PhotoLib.SystemCore.Libraries.dll": {}
+        }
       }
     }
   },
@@ -1553,6 +1563,11 @@
         "system.text.json.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "PhotoLib.SystemCore.Libraries/1.0.0": {
+      "type": "project",
+      "path": "../PhotoLib.SystemCore.Libraries/PhotoLib.SystemCore.Libraries.csproj",
+      "msbuildProject": "../PhotoLib.SystemCore.Libraries/PhotoLib.SystemCore.Libraries.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -1560,6 +1575,7 @@
       "Microsoft.EntityFrameworkCore.Design >= 7.0.9",
       "Microsoft.EntityFrameworkCore.Sqlite >= 7.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.9",
+      "PhotoLib.SystemCore.Libraries >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.2.3"
     ]
   },
@@ -1595,7 +1611,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Work Stuff\\Coding\\PhotoLib\\backend\\PhotoLib.SystemCore.Libraries\\PhotoLib.SystemCore.Libraries.csproj": {
+              "projectPath": "D:\\Work Stuff\\Coding\\PhotoLib\\backend\\PhotoLib.SystemCore.Libraries\\PhotoLib.SystemCore.Libraries.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
