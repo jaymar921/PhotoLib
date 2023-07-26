@@ -10,7 +10,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoLib.AlbumMicroService.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoLib.PhotoMicroService.API", "PhotoLib.PhotoMicroService.API\PhotoLib.PhotoMicroService.API.csproj", "{6D9666C3-D0EC-405F-92E0-FD8EDEAC1365}"
 	ProjectSection(ProjectDependencies) = postProject
+		{01263638-5078-401C-B8A9-447867366DA2} = {01263638-5078-401C-B8A9-447867366DA2}
 		{22AE81EC-AF39-40BE-9DB2-7D56A8F3FF89} = {22AE81EC-AF39-40BE-9DB2-7D56A8F3FF89}
+		{F528AD60-FB39-43EA-9BC3-22B5BB14BA25} = {F528AD60-FB39-43EA-9BC3-22B5BB14BA25}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoLib.SystemCore.Libraries", "PhotoLib.SystemCore.Libraries\PhotoLib.SystemCore.Libraries.csproj", "{22AE81EC-AF39-40BE-9DB2-7D56A8F3FF89}"
