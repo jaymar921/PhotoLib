@@ -2,8 +2,20 @@ import React from 'react'
 import '../Components.css';
 import ViewsComponent from './ViewsComponent';
 import Social from './Social';
+import { User } from '../objects/User';
+import { GetSocialLink } from '../Utils/DataHelper';
 
-function ProfileComponent() {
+function ProfileComponent({UserInfo = new User()}) {
+    const copyLinkUrl = () => {
+        var dummy = document.createElement('input'),
+        text = window.location.href;
+
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+    }
   return (
     <>
         <div className='Profile-Container'>
@@ -12,31 +24,34 @@ function ProfileComponent() {
                 <img src='./assets/myself.jpg'/>
             </div>
             <div className='Profile-Info'>
-                <h1 className='FullName'>Jayharron Mar Abejar</h1>
-                <h4 className='Username'>@JayMar921</h4>
+                <h1 className='FullName'>{UserInfo.fullname}</h1>
+                <h4 className='Username'>@{UserInfo.username}</h4>
                 <div className='Flex'>
-                    <ViewsComponent />
-                    <p className='Pronouns'>(He/Him)</p>
-                    <p className='Country'>🇵🇭</p>
+                    <ViewsComponent views={UserInfo.views} />
+                    <p className='Pronouns'>({UserInfo.pronouns})</p>
+                    <p className='Country'>{UserInfo.country}</p>
                 </div>
                 <div className='Bio'>
                     <p className='Bio-Ind'>Bio</p>
-                    <p className='Bio-Details'>def __init__(self):
-                        self.skills = 'no record found'
-                        
-                    message - "You don't need to know me"
-                    </p>
+                    <p className='Bio-Details'>{UserInfo.bio}</p>
                 </div>
                 <hr className='HR-Line' />
                 <div className='Socials'>
                     <h3>Socials</h3>
                     <div className='Socials-Container'>
-                        <Social src={'./assets/fb.png'} platform={'Facebook'}/>
-                        <Social src={'./assets/ig.png'} platform={'Instagram'}/>
+                        {
+                            UserInfo.socials.map(social => {
+                                const socialData = GetSocialLink(social);
+                                
+                                return <Social key={Math.floor(Math.random()*100000)} src={socialData[0]} platform={socialData[1]} href={socialData[2]}/>
+                            })
+                        }
                     </div>
                 </div>
             </div>
-            <div className='Profile-CopyLink'>
+            <div className='Profile-CopyLink' onClick={(e) => {
+                copyLinkUrl();     
+            }}>
                 Copy profile link <i className="fa-solid fa-share"></i>
             </div>
         </div>

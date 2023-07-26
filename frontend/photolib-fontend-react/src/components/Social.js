@@ -8,7 +8,7 @@ function Social({src, href, platform}) {
             <img src={src}/>
         </div>
         <div className='Link'>
-            <a href={href}>{platform}</a>
+            <a href={href} target='_blank'>{platform}</a>
         </div>
     </div>
   )

@@ -319,6 +319,186 @@
     height: 150%;
 }
 
+/*
+    FORMS COMPONENT - CSS
+*/
+.LoginUI{
+    position: relative;
+    background-image: url('./assets/login_bg.jpg');
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 97.5vh;
+}
+
+.LoginUI > :nth-child(n){
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.loginForm{
+    position: relative;
+    width: 350px;
+    height: fit-content;
+    background-color: rgba(0,0,0,0.8);
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.loginForm .Title h2,
+.loginForm .Title p{
+    position: relative;
+    margin: 0;
+    width: 100%;
+}
+
+.loginForm .Title{
+    margin: 5px;
+}
+
+.loginForm .fields > :nth-child(n){
+    display: block;
+    text-align: left;
+}
+
+
+.loginForm .fields{
+    position: relative;
+    display: block;
+    text-align: left;
+    width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+}
+
+
+.loginForm .fields input{
+    position: relative;
+    background-color: rgba(0,0,0,0.8);
+    outline: none;
+    border: none;
+    border-bottom: 2px solid white;
+    color: white;
+    padding: 5px 5px 5px 10px;
+    font-size: 18px;
+    width: 100%;
+    transition: border-color .3s cubic-bezier(.25, .01, .25, 1) 0s;
+}
+
+.loginForm .fields input:hover{
+    border-color: #727272;
+}
+
+
+.loginForm .fields input:focus{
+    background-color: rgba(24, 24, 24, 0.5);
+    border-color: white;
+}
+
+.btn-submit{
+    position: relative;
+    display: block;
+    padding: 5px 20px 5px 20px;
+    background-color: rgba(0,0,0,0.8);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+    margin-top: 10px;
+}
+.btn-submit:hover{
+    cursor: pointer;
+    background-color: rgba(17, 17, 17, 0.8);
+}
+.btn-center{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.loginForm a{
+    position: relative;
+    display: block;
+    color: white;
+    margin-top: 2px;
+}
+
+.loginForm span{
+    position: relative;
+    color: red;
+    font-size: 20px;
+}
+
+.loginForm .btn-container{
+    position: relative;
+    width: 100px;
+    background-color: red;
+}
+
+
+
+.sus-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 10px;
+    color: white;
+    text-shadow: 2px 2px rgb(116, 116, 116);
+    text-transform: uppercase;
+    border: solid 2px black;
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-size: 17px;
+    background-color: hsl(49deg 98% 60%);
+    border-radius: 50px;
+    position: relative;
+    overflow: hidden;
+    transition: all .5s ease;
+    width: 100%;
+  }
+  
+  .sus-btn:active {
+    transform: scale(.9);
+    transition: all 100ms ease;
+  }
+  
+  .sus-btn svg {
+    transition: all .5s ease;
+    z-index: 2;
+  }
+  
+  .play {
+    transition: all .5s ease;
+    transition-delay: 300ms;
+  }
+  
+  .sus-btn:hover svg {
+    transform: scale(3) translate(50%);
+  }
+  
+  .now {
+    position: absolute;
+    left: 0;
+    transform: translateX(-100%);
+    transition: all .5s ease;
+    z-index: 2;
+  }
+  
+  .sus-btn:hover .now {
+    transform: translateX(10px);
+    transition-delay: 300ms;
+  }
+  
+  .sus-btn:hover .play {
+    transform: translateX(200%);
+    transition-delay: 300ms;
+  }
 
 
 
@@ -373,6 +553,9 @@
         margin-top: 10px;
         left: 50%;
         transform: translateX(-50%);
+    }
+    .LoginUI{
+        height: 100vh;
     }
 }
 
