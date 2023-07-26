@@ -12,6 +12,14 @@ namespace PhotoLib.AuthMicroService.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            string policyCorsName = "APICors";
+            builder.Services.AddCors(options => {
+                options.AddPolicy(name: policyCorsName, builder =>
+                {
+                    builder.WithOrigins("*").WithMethods("*");
+                });
+            });
+
             // Add the db context
             builder.Services.AddDbContext<UserDBContext>(options => options.UseSqlite("Data Source=UserDatabase_SQLITE"));
             builder.Services.Configure<UserDBContext>(options => { options.Initialize(); }); 
@@ -34,7 +42,10 @@ namespace PhotoLib.AuthMicroService.API
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+
+            // add the cors policy to the app
+            app.UseCors(options => options.SetIsOriginAllowed(x => _ =  true).AllowAnyMethod().AllowCredentials().AllowAnyHeader());
 
             app.UseAuthorization();
 
