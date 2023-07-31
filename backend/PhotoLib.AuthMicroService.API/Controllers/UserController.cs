@@ -237,7 +237,7 @@ namespace PhotoLib.AuthMicroService.API.Controllers
 
             var userDTO = new UserModel(user).ParseDTO();
 
-            return Ok(new {User= userDTO, Message = "Retrieved User info", StatusCode = 200});
+            return Ok(new {User= userDTO, Message = "Retrieved User info", userId = user.Guid, StatusCode = 200});
         }
     }
 }
