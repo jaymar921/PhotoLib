@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\PhotoLib.AlbumMicroService.API.props" />
+</Project>
