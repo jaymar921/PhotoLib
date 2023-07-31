@@ -1,3 +1,6 @@
 {
-    "SERVER_URL_AUTH_MICROSERVICE": "http://localhost:5010/api"
+    "SERVER_URL_AUTH_MICROSERVICE": "http://localhost:5010/api",
+    "SERVER_URL_PHOTO_MICROSERVICE": "http://localhost:5123/api",
+    "SERVER_URL_ALBUM_MICROSERVICE": "http://localhost:5064/api",
+    "CLIENT_ID_GGL": "319031161704-j5nhqlkc1slfsmmqu8rith8nirc39lun.apps.googleusercontent.com"
 }

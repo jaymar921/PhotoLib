@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import configData from '../config.json';
 import { User } from '../objects/User';
+import config from '../config.json';
 
 const LoginUserAsync = async (user, pass) => {
     let status = '';
@@ -94,6 +95,31 @@ export async function retrieveUserInformation(username){
     });
 
     return user;
+}
+
+export async function retrieveUserAlbumInformation(username){
+    let albums = [];
+    await fetch(config.SERVER_URL_ALBUM_MICROSERVICE+"/Album",{
+        headers: {
+            username 
+        },
+        method: 'GET'
+    })
+    .then(r => r.json())
+    .then(d => {
+        if(d && d.albums !== undefined)
+            d.albums.forEach(item => albums.push(item));
+    })
+    .catch(e => console.error(e.toString()))
+    return albums;
+}
+
+export function GetMonthYear(date){
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+    ];
+    const d = new Date(date);
+    return [monthNames[d.getMonth()], d.getFullYear()];
 }
 
 export function GetSocialLink(social){

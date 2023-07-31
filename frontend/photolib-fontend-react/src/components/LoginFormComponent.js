@@ -40,7 +40,7 @@ function LoginFormComponent({apiCallOnSubmit, status}) {
 
             
             
-            <a href='#'>create an <b>account</b></a>
+            <a href='/register'>create an <b>account</b></a>
         </form>
     )
 }
