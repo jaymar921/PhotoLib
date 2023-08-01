@@ -1,4 +1,3 @@
-import React from 'react';
 import { useLocation } from 'react-router-dom';
 import configData from '../config.json';
 import { User } from '../objects/User';
@@ -43,8 +42,10 @@ const GetUserInfoAsync = async (username, token) => {
         method: "GET"
     })
     .then( r => r.json())
-    .then( d => {
+    .then( async (d) => {
         const user = d.user;
+
+        const albums = await retrieveUserAlbumInformation(username);
         
         localStorage.setItem("token", JSON.stringify({
             User: new User(
@@ -56,10 +57,27 @@ const GetUserInfoAsync = async (username, token) => {
                 user.views,
                 user.socials
             ),
-            AuthToken: token
+            AuthToken: token,
+            Albums:albums
         }))
         window.location = '/'
     });
+}
+
+export async function AuthTokenExpired(token) {
+    let verified = false;
+
+    await fetch(configData.SERVER_URL_AUTH_MICROSERVICE+"/auth",{
+        headers:{
+            AuthToken: token
+        }
+    })
+    .then(r => r.json())
+    .then(d => {
+        verified = d.expired;
+    })
+
+    return verified;
 }
 
 

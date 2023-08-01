@@ -3,7 +3,7 @@ import ProfileComponent from '../components/ProfileComponent'
 import '../Components.css'
 import AlbumComponent from '../components/AlbumComponent'
 import PhotosContainerComponent from '../components/PhotosContainerComponent'
-import { retrieveUserAlbumInformation, retrieveUserInformation, useQueryParams } from '../Utils/DataHelper'
+import { retrieveUserAlbumInformation, retrieveUserInformation, useQueryParams, AuthTokenExpired } from '../Utils/DataHelper'
 import { User } from '../objects/User'
 
 function ProfileDashboard() {
@@ -20,15 +20,28 @@ function ProfileDashboard() {
         setUserData(data);
         setAlbums(await retrieveUserAlbumInformation(params.user));
       }else{
-        const cachedUser = localStorage.getItem('token');
-        if(cachedUser){
-          const userParsed = JSON.parse(cachedUser).User;
+        const cachedData = localStorage.getItem('token');
+        if(cachedData){
+          const authenticationToken = JSON.parse(cachedData).AuthToken;
+          if(!authenticationToken){
+            window.location.href = '/login'
+          }
+
+          AuthTokenExpired(authenticationToken).then(expired => {
+            if(expired){
+              window.location.href = '/login';
+            }
+          });
+
+          const userParsed = JSON.parse(cachedData).User;
+          
           setUserData(userParsed);
-          setAlbums(await retrieveUserAlbumInformation(userParsed.username));
+          setAlbums(JSON.parse(cachedData).Albums);
         }
       }
     }
     GetData();
+
     
   },[]);
 

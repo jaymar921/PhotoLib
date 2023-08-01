@@ -38,6 +38,165 @@ body{
   z-index: 999;
 }
 
+.modal-container{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1999;
+}
+
+.modal{
+  position: relative;
+  width: 500px;
+  background-color: #272727;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 50px;
+  padding: 20px;
+}
+
+.flexblock{
+  position: relative;
+  display: flex;
+}
+
+.flexblock .flex{
+  position: relative;
+  margin: auto;
+}
+
+.flexblock .flex .block{
+  position: relative;
+  margin: auto;
+  width: 220px;
+  overflow: hidden;
+}
+
+.flexblock .flex .block input,
+.flexblock .flex .block textarea{
+  position: relative;
+  width: 100%;
+  resize: none;
+  background-color: #202020;
+  border: none;
+  padding: 3px;
+  font-size: 18px;
+  color: white;
+  outline: none;
+}
+
+.flexblock .flex .block label{
+  font-weight: 500;
+  font-size: 18px;
+  color: white;
+}
+
+.flexblock .flex .block .insert-image{
+  position: relative;
+  width: 220px;
+  height: 220px;
+  background-color: #0A0A0A;
+  background-size: auto;
+  background-repeat: no-repeat;
+}
+
+.insertImageP{
+  position: absolute;
+  z-index: 99999;
+  left: 0;
+  top: 0;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.pad-top-50px-nmbl{
+  padding-top: 50px;
+}
+
+
+.btn-center{
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modal .err{
+  position: relative;
+  color: red;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+/*
+
+*/
+.toggle-checkbox {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.toggle-switch {
+  background-color: gray;
+  width: 78px;
+  height: 32px;
+  border-radius: 16px;
+  position: relative;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.toggle-switch::before {
+  content: "";
+  font-weight: 900;
+  background-color: white;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  border-radius: 50%;
+  top: 4px;
+  left: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ddd;
+  transition: 0.3s;
+}
+
+.toggle-checkbox:checked+.toggle-switch {
+  background-color: #0075ff;
+}
+
+.toggle-checkbox:checked+.toggle-switch::before {
+  content: "";
+  left: 50px;
+  color: #0075ff;
+}
+
+.radio{
+  position: relative;
+  display: flex;
+}
+
+.radio div{
+  position: relative;
+  height: 32px;
+  text-align: center;
+}
+
+.radio div p{
+  position: relative;
+  font-size: 20px;
+  font-weight: 500;
+  top: -19px;
+  left: 15px;
+}
+
 
 @media only screen and (min-width: 500px) {
   .App{
@@ -73,13 +232,34 @@ body{
   .btn-generic{
     position: relative;
     display: block;
-    width: 100%;
   }
 
   .top-Right{
     position: relative;
     top: 0;
     right: 0;
+  }
+
+  .flexblock{
+    display: block;
+  }
+
+  .modal{
+    width: 80%;
+    min-width: 300px;
+    padding: 0px;
+  }
+  .pad-top-50px-nmbl{
+    padding-top: 0;
+  }
+  .flexblock .flex .block .insert-image{
+    width: 100%;
+  }
+
+  .modal .title{
+    position: relative;
+    text-align: center;
+    padding-top: 20px;
   }
 }
 
