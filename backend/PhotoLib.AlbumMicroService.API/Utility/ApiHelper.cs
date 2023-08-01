@@ -5,7 +5,7 @@
         public static async Task<Guid> ApiGetAlbumsByUsername(string username)
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:7194/");
+            client.BaseAddress = new Uri("http://192.168.1.50:5051");
             client.DefaultRequestHeaders.Add("Username", username);
 
             HttpResponseMessage httpResponseMessage = await client.GetAsync("api/User");
@@ -26,7 +26,7 @@
 
             // prepare of API call [authentication token check]
             var client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:7194/");
+            client.BaseAddress = new Uri("http://192.168.1.50:5051");
             client.DefaultRequestHeaders.Add("AuthToken", authToken.ToString());
 
             // call the Auth API
