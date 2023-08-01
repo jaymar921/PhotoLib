@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ProfileComponent from '../components/ProfileComponent'
 import '../Components.css'
-import AlbumComponent from '../components/AlbumComponent'
+import AlbumComponent, {NewAlbumModal} from '../components/AlbumComponent'
 import PhotosContainerComponent from '../components/PhotosContainerComponent'
 import { retrieveUserAlbumInformation, retrieveUserInformation, useQueryParams, AuthTokenExpired } from '../Utils/DataHelper'
 import { User } from '../objects/User'
@@ -11,6 +11,8 @@ function ProfileDashboard() {
   const [userData, setUserData] = useState(new User());
   const [albums, setAlbums] = useState([]);
   const [activeAlbum, setActiveAlbum] = useState('');
+  const [showNewAlbumModal, setShowNewAlbumModal] = useState('hidden');
+  
 
   useEffect(()=>{
     // get the user data [API call]
@@ -43,10 +45,10 @@ function ProfileDashboard() {
     GetData();
 
     
-  },[]);
+  }, []);
 
   function newAlbumCallback(e){
-    
+    setShowNewAlbumModal('');
   }
 
   return (
@@ -56,7 +58,8 @@ function ProfileDashboard() {
                 <ProfileComponent UserInfo={userData} />
                 <div className='dashboard-flexblock'>
                     <AlbumComponent albums={albums} callback={setActiveAlbum} addAlbumCallback={newAlbumCallback} />
-                    <PhotosContainerComponent />
+                    <NewAlbumModal show={showNewAlbumModal} setShow={setShowNewAlbumModal}/>
+                    <PhotosContainerComponent currentAlbum={activeAlbum} />
                 </div>
             </div>
         </div>

@@ -8,7 +8,6 @@ function AlbumComponent({albums, callback, addAlbumCallback}) {
 
   return (
     <div className='Album-Container'>
-        <NewAlbumModal />
         <h1 className='Title'>Albums</h1>
         <div className='Albums-List'>
             
@@ -44,7 +43,7 @@ function Album({data, callback}){
     )
 }
 
-export function NewAlbumModal() {
+export function NewAlbumModal({show, setShow}) {
     const [image, setImage] = useState(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -79,7 +78,11 @@ export function NewAlbumModal() {
         `)
     }
   return (
-    <div className='modal-container'>
+    <div id='modal-container-album' className={`modal-container ${show}`} onClick={(e)=>{
+        if(e.target.id === 'modal-container-album'){
+            setShow('hidden');
+        }
+    }}>
         <div className='modal'>
             <h2 className='title'>New Album</h2>
             <div className='flexblock'>
