@@ -114,7 +114,7 @@ namespace PhotoLib.AlbumMicroService.API.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(AlbumDTO albumDTO)
+        public async Task<IActionResult> Delete()
         {
             var apiResult = await ApiHelper.CheckHeaderToken(Request);
 

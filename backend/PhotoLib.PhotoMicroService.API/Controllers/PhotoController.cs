@@ -77,7 +77,7 @@ namespace PhotoLib.PhotoMicroService.API.Controllers
                 return NotFound(new { Message = "File requested does not exist." });
             }
 
-            var path = Path.Combine(webHostEnvironment.WebRootPath, "Images\\", $"{ImagePath}\\{photo.AlbumID}\\");
+            var path = Path.Combine(webHostEnvironment.WebRootPath, "Images", ImagePath.ToString(), photo.AlbumID.ToString());
 
             string[] files = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly);
             string fileFound = string.Empty;
