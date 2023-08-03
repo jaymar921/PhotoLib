@@ -148,4 +148,168 @@ export function GetSocialLink(social){
     return ['./assets/website.png', 'Website', social.link];
 }
 
+export async function CreateNewAlbum(userData, token, title, description, isPublic, image){
+    console.log(userData,title, description, isPublic, image, token)
+
+    const newAlbumResponse = await fetch(config.SERVER_URL_ALBUM_MICROSERVICE+"/Album",{
+        method: "POST",
+        headers:{
+            Username: userData.username,
+            AuthToken: token,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            userID: "00000000-0000-0000-0000-000000000000",
+            dateCreated: new Date().toISOString(),
+            dateLastModified: new Date().toISOString(),
+            title: title,
+            description: new String(description),
+            views: 0,
+            isPublic: new Boolean(isPublic)
+        })
+    })
+
+    const newAlbumResponseJson = await newAlbumResponse.json();
+
+    if(newAlbumResponseJson.statusCode === 401){
+        console.log("Unauthorized, failed to create new album");
+        return;
+    }
+
+    // get all albums
+    const getAlbumsResponse = await fetch(config.SERVER_URL_ALBUM_MICROSERVICE+"/Album",{
+        headers:{
+            Username: userData.username
+        }
+    })
+
+    const getAlbumsResponseJson = await getAlbumsResponse.json();
+
+    console.log(getAlbumsResponseJson);
+
+    let albumID = null;
+    try{
+        if('albums' in getAlbumsResponseJson){
+            getAlbumsResponseJson.albums.forEach(album => {
+                if(album.title == title){
+                    albumID = album.guid;
+                }
+            })
+        }
+    }catch(e){}
+
+    if(albumID === null){
+        console.log("No album ID found")
+        return;
+    }
+
+    // upload a photo, get the ID first
+    const photoApiResponse = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo",{
+        method: 'POST',
+        headers:{
+            AuthToken: token,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "photoId": "00000000-0000-0000-0000-000000000000",
+            "albumID": albumID,
+            "caption": "Album Photo",
+            "dateCreated": new Date().toISOString(),
+            "views": 0
+        })
+    })
+
+    const photoApiResponseJson = await photoApiResponse.json();
+
+    let imageID = null;
+    if(!('imageID' in photoApiResponseJson)){
+        console.log("Failed to retrieve image ID, could not proceed to upload album photo");
+        return;
+    }
+
+    imageID = photoApiResponseJson.imageID;
+
+    const formData = new FormData();
+    
+
+    // upload the Image
+    const imageApiResponse = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE + "/Photo/Image",{
+        method: "POST",
+        headers:{
+            AuthToken: token,
+            Path: "Album",
+            ImageID: new String(imageID)
+        },
+        body: formData,
+        redirect: 'follow'
+    });
+
+    const imageApiResponseJson = await imageApiResponse.json();
+
+   
+
+    console.log(imageApiResponseJson)
+    setTimeout(()=> {
+        window.location.href = '/';
+    }, 2000)
+}
+
+export async function getAlbumImage(albumID){
+    let imageID = null;
+
+    await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo",{
+        headers:{
+            AlbumID: albumID
+        }
+    })
+    .then(r => r.json())
+    .then(d => {
+        for(var image of d.photos){
+            imageID = image.photoId;
+            console.log(image)
+            break;
+        }
+    })
+    
+    const resp = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo/Image",{
+        headers: {
+            Path: "Album",
+            PhotoID: new String(imageID)
+        }
+    });
+
+    const reader = await resp.body.getReader();
+    let chunks = [];
+
+    
+    let imageFile;
+    await reader.read().then(function processText({ done, value }) {
+        
+
+        if (done) {
+            console.log('Stream finished. Content received:')
+
+            console.log(chunks);
+
+
+            const blob = new Blob([chunks], { type: "image/png" });
+            console.log(blob);
+
+            imageFile = URL.createObjectURL(blob);
+            return
+        }
+
+        console.log(`Received ${chunks.length} chars so far!`)
+        // console.log(value);
+        const tempArray = new Uint8Array(chunks.length + value.length);
+        tempArray.set(chunks);
+        tempArray.set(value, chunks.length);
+        chunks = tempArray
+
+        return reader.read().then(processText)
+    });
+    
+    return imageFile;
+}
+
 export default LoginUserAsync;

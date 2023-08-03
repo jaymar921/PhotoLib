@@ -12,6 +12,7 @@ function ProfileDashboard() {
   const [albums, setAlbums] = useState([]);
   const [activeAlbum, setActiveAlbum] = useState('');
   const [showNewAlbumModal, setShowNewAlbumModal] = useState('hidden');
+  const [token, setToken] = useState('');
   
 
   useEffect(()=>{
@@ -34,6 +35,8 @@ function ProfileDashboard() {
               window.location.href = '/login';
             }
           });
+
+          setToken(authenticationToken);
 
           const userParsed = JSON.parse(cachedData).User;
           
@@ -58,7 +61,7 @@ function ProfileDashboard() {
                 <ProfileComponent UserInfo={userData} />
                 <div className='dashboard-flexblock'>
                     <AlbumComponent albums={albums} callback={setActiveAlbum} addAlbumCallback={newAlbumCallback} />
-                    <NewAlbumModal show={showNewAlbumModal} setShow={setShowNewAlbumModal}/>
+                    <NewAlbumModal show={showNewAlbumModal} setShow={setShowNewAlbumModal} userData={userData} token={token}/>
                     <PhotosContainerComponent currentAlbum={activeAlbum} />
                 </div>
             </div>

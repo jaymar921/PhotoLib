@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ViewsComponent from './ViewsComponent';
-import { GetMonthYear } from '../Utils/DataHelper';
+import { CreateNewAlbum, GetMonthYear, getAlbumImage } from '../Utils/DataHelper';
 import Button, { Radio } from './Button';
 
 function AlbumComponent({albums, callback, addAlbumCallback}) {
@@ -26,12 +26,21 @@ function AlbumComponent({albums, callback, addAlbumCallback}) {
 }
 
 function Album({data, callback}){
-    
+    const [img, setImg] = useState(null)
+    useEffect(()=> {
+        async function loadAlbumImage(){
+            const imageFile = await getAlbumImage(data.guid);
+            console.log(imageFile)
+            setImg(imageFile);
+        }
+
+       loadAlbumImage();
+    }, [])
     return (
         <div className='Album' onClick={(e)=> {callback(data.title)}}>
             <div className='darkbg'></div>
             <div className='Image-Container'>
-                <img alt='' src='./assets/IMG_2967.JPG' />
+                <img alt='' src={img} />
             </div>
             <div className='info'>
                 <h2>{data.title}</h2>
@@ -43,13 +52,15 @@ function Album({data, callback}){
     )
 }
 
-export function NewAlbumModal({show, setShow}) {
+export function NewAlbumModal({show, setShow, userData, token}) {
     const [image, setImage] = useState(null);
+    const [imageFile, setimageFile] = useState(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [isPublic, setIsPublic] = useState('');
+    const [isPublic, setIsPublic] = useState(false);
     const imageRef = useRef();
     const [insertImageP, setInsertImage] = useState('Insert Image');
+    const [errorMessage, setErrorMessage] = useState('');
 
     function uploadImage(){
         document.getElementById('upload-image-modal').click();
@@ -60,6 +71,7 @@ export function NewAlbumModal({show, setShow}) {
             return;
         console.log(e)
         setImage(URL.createObjectURL(e));
+        setimageFile(e);
         setInsertImage(' ')
 
         if(image){
@@ -76,6 +88,21 @@ export function NewAlbumModal({show, setShow}) {
             image:       ${image},
             image ref:   ${imageRef}
         `)
+
+        if(title === ''){
+            setErrorMessage("Title should be provided");
+            return;
+        }
+        if(description === ''){
+            setErrorMessage("Description should be provided");
+            return;
+        }
+        if(imageFile === null){
+            setErrorMessage("Image should be provided");
+            return;
+        }
+
+        CreateNewAlbum(userData, token,title, description, isPublic, imageFile)
     }
   return (
     <div id='modal-container-album' className={`modal-container ${show}`} onClick={(e)=>{
@@ -90,11 +117,11 @@ export function NewAlbumModal({show, setShow}) {
                     <div className='block'>
                         <label>Title</label>
                         <br />
-                        <input type='text' value={title} onInput={({target})=>{setTitle(target.value)}}/>
+                        <input type='text' value={title} onInput={({target})=>{setTitle(target.value); setErrorMessage("");}}/>
                         <br />
                         <label>Description</label>
                         <br />
-                        <textarea value={description} onInput={({target})=>{setDescription(target.value)}}></textarea>
+                        <textarea value={description} onInput={({target})=>{setDescription(target.value); setErrorMessage("");}}></textarea>
                         <br />
                         <br />
                         <div className='pad-top-50px-nmbl' />
@@ -108,7 +135,7 @@ export function NewAlbumModal({show, setShow}) {
                     <div className='block'>
                         <img id='upload-img-display' alt={image} className='insert-image' onClick={uploadImage} src={image}/>
                         <input id='upload-image-modal' hidden className='insert-image' type='file' onChange={(e)=> {
-                            handleUploadImageChange(imageRef.current.files[0])
+                            handleUploadImageChange(imageRef.current.files[0]); setErrorMessage("");
                         }} ref={imageRef} />
                         <p className='insertImageP'>{insertImageP}</p>
                     </div>
@@ -120,7 +147,7 @@ export function NewAlbumModal({show, setShow}) {
                     <br />
                 </div>
             </div>
-            <p className='err'>message</p>
+            <p className='err'>{errorMessage}</p>
             <br />
         </div>
     </div>
