@@ -1,0 +1,26 @@
+services:
+
+  asp_net_photolib_auth_microservice:
+    build: 
+      context: backend/
+      dockerfile: PhotoLib.AuthMicroService.API/Dockerfile
+    ports:
+      - 5051:80
+
+  asp_net_photolib_album_microservice:
+    build: 
+      context: backend/
+      dockerfile: PhotoLib.AlbumMicroService.API/Dockerfile
+    ports:
+      - 5052:80
+    depends_on:
+      - asp_net_photolib_auth_microservice
+  
+  asp_net_photolib_photo_microservice:
+    build: 
+      context: backend/
+      dockerfile: PhotoLib.PhotoMicroService.API/Dockerfile
+    ports:
+      - 5053:80
+    depends_on:
+      - asp_net_photolib_auth_microservice
