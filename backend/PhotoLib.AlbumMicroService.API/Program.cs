@@ -20,6 +20,7 @@ namespace PhotoLib.AlbumMicroService.API
             });
             // Add services to the container.
             builder.Services.AddDbContext<DatabaseContext>(option => option.UseSqlite("Data Source=ALBUM_DB_SQLITE"));
+
             builder.Services.AddScoped<IRepository<Album>,AlbumRepository>();
 
             builder.Services.AddControllers();
@@ -28,6 +29,12 @@ namespace PhotoLib.AlbumMicroService.API
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+                db.Initialize();
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

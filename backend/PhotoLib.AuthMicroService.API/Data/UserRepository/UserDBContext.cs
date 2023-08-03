@@ -13,7 +13,7 @@ namespace PhotoLib.AuthMicroService.API.Data.UserRepository
 
         public void Initialize()
         {
-            Database.EnsureCreated();
+            Database.Migrate();
             SaveChanges();
             _logger.LogInformation("DB Context Initialization");
         }

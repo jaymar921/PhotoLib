@@ -22,7 +22,7 @@ namespace PhotoLib.AuthMicroService.API
 
             // Add the db context
             builder.Services.AddDbContext<UserDBContext>(options => options.UseSqlite("Data Source=UserDatabase_SQLITE"));
-            builder.Services.Configure<UserDBContext>(options => { options.Initialize(); }); 
+            
 
             // Add services to the container.
             builder.Services.AddSingleton<SessionHandler>();
@@ -34,6 +34,12 @@ namespace PhotoLib.AuthMicroService.API
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<UserDBContext>();
+                db.Initialize();
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

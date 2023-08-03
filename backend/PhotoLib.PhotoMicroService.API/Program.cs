@@ -20,6 +20,7 @@ namespace PhotoLib.PhotoMicroService.API
             });
             // add the database context
             builder.Services.AddDbContext<PhotoDbContext>( options => { options.UseSqlite("Data Source=PhotoDatabase_SQLITE"); });
+
             // Add services to the container.
             builder.Services.AddScoped<IRepository<Photo>, PhotoRepository>();
             builder.Services.AddSingleton<DataHandler>();
@@ -30,6 +31,12 @@ namespace PhotoLib.PhotoMicroService.API
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            using(var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<PhotoDbContext>();
+                db.Initialize();
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

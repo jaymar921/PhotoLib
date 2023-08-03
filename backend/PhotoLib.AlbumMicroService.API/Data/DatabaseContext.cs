@@ -10,6 +10,13 @@ namespace PhotoLib.AlbumMicroService.API.Data
 
         }
 
+        public void Initialize()
+        {
+            Database.Migrate();
+            SaveChanges();
+        }
+
+
         public DbSet<Album> Albums { get; set; }
         public DbSet<AlbumState> AlbumStates { get; set; }
     }
