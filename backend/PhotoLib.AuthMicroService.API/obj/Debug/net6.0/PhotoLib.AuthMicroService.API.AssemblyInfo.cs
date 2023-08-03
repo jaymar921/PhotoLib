@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("682c3511-4ebe-449f-ba84-80b1a36f0e1d")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("PhotoLib.AuthMicroService.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "dAqAEGFMX3g7+Oj/lR20E+lMpU5YG3vgN8x4zvTz/gZUaO+VN5q/Oah50W8fcGxI30s5vciL0szLSTk6kWMErg==",
+  "dgSpecHash": "Ac11I7O3AjwVwF7h0J2wfUN7hWz7k2ba54hKU0f3Eho8Fq48ZMw4MydYl63xoNuP+FmK7ycyNoXOn39w+rHITg==",
   "success": true,
   "projectFilePath": "D:\\Work Stuff\\Coding\\PhotoLib\\backend\\PhotoLib.AuthMicroService.API\\PhotoLib.AuthMicroService.API.csproj",
   "expectedPackageFiles": [
@@ -26,6 +26,7 @@
     "C:\\Users\\jayha\\.nuget\\packages\\microsoft.extensions.options\\7.0.0\\microsoft.extensions.options.7.0.0.nupkg.sha512",
     "C:\\Users\\jayha\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
     "C:\\Users\\jayha\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\jayha\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.17.2\\microsoft.visualstudio.azure.containers.tools.targets.1.17.2.nupkg.sha512",
     "C:\\Users\\jayha\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\jayha\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.4\\sqlitepclraw.bundle_e_sqlite3.2.1.4.nupkg.sha512",
     "C:\\Users\\jayha\\.nuget\\packages\\sqlitepclraw.core\\2.1.4\\sqlitepclraw.core.2.1.4.nupkg.sha512",
