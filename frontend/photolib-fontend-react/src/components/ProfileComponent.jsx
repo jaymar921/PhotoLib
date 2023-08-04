@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../Components.css';
 import ViewsComponent from './ViewsComponent';
 import Social from './Social';
@@ -6,9 +6,12 @@ import { User } from '../objects/User';
 import { GetSocialLink } from '../Utils/DataHelper';
 
 function ProfileComponent({UserInfo = new User()}) {
+    const [showBio, setShowBio] = useState('hidden');
+    const [showSocials, setShowSocials] = useState('hidden');
+
     const copyLinkUrl = () => {
         var dummy = document.createElement('input'),
-        text = window.location.href;
+        text = window.location.href + `?user=${UserInfo.username}`;
 
         document.body.appendChild(dummy);
         dummy.value = text;
@@ -16,6 +19,14 @@ function ProfileComponent({UserInfo = new User()}) {
         document.execCommand('copy');
         document.body.removeChild(dummy);
     }
+
+    useEffect(()=>{
+        if(UserInfo.bio !== '')
+            setShowBio('');
+        if(UserInfo.socials.length > 0)
+            setShowSocials('');
+    }, []);
+
   return (
     <>
         <div className='Profile-Container'>
@@ -31,12 +42,12 @@ function ProfileComponent({UserInfo = new User()}) {
                     <p className='Pronouns'>({UserInfo.pronouns})</p>
                     <p className='Country'>{UserInfo.country}</p>
                 </div>
-                <div className='Bio'>
+                <div className={`Bio ${showBio}`}>
                     <p className='Bio-Ind'>Bio</p>
                     <p className='Bio-Details'>{UserInfo.bio}</p>
                 </div>
                 <hr className='HR-Line' />
-                <div className='Socials'>
+                <div className={`Socials ${showSocials}`}>
                     <h3>Socials</h3>
                     <div className='Socials-Container'>
                         {

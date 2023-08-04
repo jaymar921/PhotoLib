@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import '../App.css'
+import '../Components.css'
 
 function Button(props) {
     const { styles, onClick } = props;
     
   return (
-    <button onClick={(e)=>{onClick(e)}} className={`btn-generic ${styles}`}>{props.children}</button>
+    <button type='button' onClick={(e)=>{onClick(e)}} className={`btn-generic ${styles}`}>{props.children}</button>
   )
 }
 

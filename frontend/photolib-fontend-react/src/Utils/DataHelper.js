@@ -149,7 +149,7 @@ export function GetSocialLink(social){
 }
 
 export async function CreateNewAlbum(userData, token, title, description, isPublic, image){
-    console.log(userData,title, description, isPublic, image, token)
+    //console.log(userData,title, description, isPublic, image, token)
 
     const newAlbumResponse = await fetch(config.SERVER_URL_ALBUM_MICROSERVICE+"/Album",{
         method: "POST",
@@ -163,9 +163,9 @@ export async function CreateNewAlbum(userData, token, title, description, isPubl
             dateCreated: new Date().toISOString(),
             dateLastModified: new Date().toISOString(),
             title: title,
-            description: new String(description),
+            description,
             views: 0,
-            isPublic: new Boolean(isPublic)
+            isPublic
         })
     })
 
@@ -191,7 +191,7 @@ export async function CreateNewAlbum(userData, token, title, description, isPubl
     try{
         if('albums' in getAlbumsResponseJson){
             getAlbumsResponseJson.albums.forEach(album => {
-                if(album.title == title){
+                if(album.title === title){
                     albumID = album.guid;
                 }
             })
@@ -230,6 +230,7 @@ export async function CreateNewAlbum(userData, token, title, description, isPubl
     imageID = photoApiResponseJson.imageID;
 
     const formData = new FormData();
+    formData.append("Image", image)
     
 
     // upload the Image
@@ -238,7 +239,7 @@ export async function CreateNewAlbum(userData, token, title, description, isPubl
         headers:{
             AuthToken: token,
             Path: "Album",
-            ImageID: new String(imageID)
+            ImageID: imageID
         },
         body: formData,
         redirect: 'follow'
@@ -249,9 +250,11 @@ export async function CreateNewAlbum(userData, token, title, description, isPubl
    
 
     console.log(imageApiResponseJson)
+    
     setTimeout(()=> {
         window.location.href = '/';
     }, 2000)
+    
 }
 
 export async function getAlbumImage(albumID){
@@ -266,7 +269,7 @@ export async function getAlbumImage(albumID){
     .then(d => {
         for(var image of d.photos){
             imageID = image.photoId;
-            console.log(image)
+            //console.log(image)
             break;
         }
     })
@@ -274,11 +277,11 @@ export async function getAlbumImage(albumID){
     const resp = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo/Image",{
         headers: {
             Path: "Album",
-            PhotoID: new String(imageID)
+            PhotoID: imageID
         }
     });
 
-    const reader = await resp.body.getReader();
+    const reader = resp.body.getReader();
     let chunks = [];
 
     
@@ -287,19 +290,19 @@ export async function getAlbumImage(albumID){
         
 
         if (done) {
-            console.log('Stream finished. Content received:')
+            //console.log('Stream finished. Content received:')
 
-            console.log(chunks);
+            //console.log(chunks);
 
 
             const blob = new Blob([chunks], { type: "image/png" });
-            console.log(blob);
+            //console.log(blob);
 
             imageFile = URL.createObjectURL(blob);
             return
         }
 
-        console.log(`Received ${chunks.length} chars so far!`)
+        //console.log(`Received ${chunks.length} chars so far!`)
         // console.log(value);
         const tempArray = new Uint8Array(chunks.length + value.length);
         tempArray.set(chunks);
@@ -310,6 +313,128 @@ export async function getAlbumImage(albumID){
     });
     
     return imageFile;
+}
+
+export async function UploadPhotoInAlbum(payload){
+    const {captions, currentAlbum} = payload;
+    const images = [...payload.files]
+
+    const authenticationToken = JSON.parse(localStorage.getItem('token')).AuthToken;
+
+    let index = 0;
+    for(const image of images){
+
+        // prepare the file for upload, call the upload photo api
+        const apiRes = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo", {
+            method: "POST",
+            headers: {
+                AuthToken: authenticationToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "photoId": "00000000-0000-0000-0000-000000000000",
+                "albumID": currentAlbum.guid,
+                "caption": captions[index++].caption,
+                "dateCreated": new Date().toISOString(),
+                "views": 0
+            })
+        })
+
+        const JsonRes = await apiRes.json();
+        
+        const imageID = JsonRes.imageID;
+
+        const formData = new FormData();
+        formData.append('Image', image);
+
+        const imageApiRes = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo/Image",{
+            method: "POST",
+            headers:{
+                AuthToken : authenticationToken,
+                ImageID: imageID,
+                Path: currentAlbum.guid
+            },
+            body: formData,
+            redirect: 'follow'
+        })
+
+        const imageApiJson = await imageApiRes.json();
+        console.log(imageApiJson);
+    }
+
+    window.location.href = '/'
+    
+}
+
+export async function LoadPhotosInAlbum(albumData){
+    const {guid:albumID} = albumData
+
+    // retrieve all photos in album
+    const apiRes = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo",{
+        method: 'GET',
+        headers: {
+            AlbumID : albumID
+        }
+    })
+    
+    const apiResJson = await apiRes.json();
+
+    const retrievedPhotos = apiResJson.photos;
+
+    if(!retrievedPhotos)
+        return [];
+
+    for(const photo of retrievedPhotos){
+        const { photoId, caption } = photo;
+
+        if(caption === 'Album Photo')
+            continue;
+
+        try{
+            // get the photo object
+            const resp = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo/Image",{
+                headers: {
+                    Path: albumID,
+                    PhotoID: photoId
+                }
+            });
+            console.log(resp)
+            const reader = resp.body.getReader();
+            let chunks = []; 
+        
+            
+            let imageFile;
+            await reader.read().then(function processText({ done, value }) {
+                
+        
+                if (done) {
+                    //console.log('Stream finished. Content received:')
+        
+                    //console.log(chunks);
+        
+        
+                    const blob = new Blob([chunks], { type: "image/png" });
+                    //console.log(blob);
+        
+                    imageFile = URL.createObjectURL(blob);
+                    return
+                }
+        
+                //console.log(`Received ${chunks.length} chars so far!`)
+                // console.log(value);
+                const tempArray = new Uint8Array(chunks.length + value.length);
+                tempArray.set(chunks);
+                tempArray.set(value, chunks.length);
+                chunks = tempArray
+        
+                return reader.read().then(processText)
+            });
+
+            photo.image = imageFile;
+        }catch(e){}
+    }
+
+    return retrievedPhotos;
 }
 
 export default LoginUserAsync;

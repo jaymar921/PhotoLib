@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import ViewsComponent from './ViewsComponent';
-import { CreateNewAlbum, GetMonthYear, getAlbumImage } from '../Utils/DataHelper';
+import { CreateNewAlbum, GetMonthYear, LoadPhotosInAlbum, getAlbumImage } from '../Utils/DataHelper';
 import Button, { Radio } from './Button';
 
-function AlbumComponent({albums, callback, addAlbumCallback}) {
+function AlbumComponent({albums, callback, addAlbumCallback, updatePhotos}) {
 
 
   return (
@@ -13,7 +13,7 @@ function AlbumComponent({albums, callback, addAlbumCallback}) {
             
             {
                 albums.map(album => {
-                    return <Album key={album.guid} data={album} callback={callback}/>
+                    return <Album key={album.guid} data={album} callback={callback} updatePhotos={updatePhotos}/>
                 })
             }
             
@@ -25,19 +25,25 @@ function AlbumComponent({albums, callback, addAlbumCallback}) {
   )
 }
 
-function Album({data, callback}){
+export function Album({data, callback, updatePhotos}){
     const [img, setImg] = useState(null)
     useEffect(()=> {
         async function loadAlbumImage(){
             const imageFile = await getAlbumImage(data.guid);
-            console.log(imageFile)
             setImg(imageFile);
         }
 
        loadAlbumImage();
     }, [])
     return (
-        <div className='Album' onClick={(e)=> {callback(data.title)}}>
+        <div className='Album' onClick={(e)=> {
+                callback(data);
+                (async()=>{
+                    const photo = await LoadPhotosInAlbum(data);
+
+                    updatePhotos(photo);
+                })();
+            }}>
             <div className='darkbg'></div>
             <div className='Image-Container'>
                 <img alt='' src={img} />
@@ -69,7 +75,7 @@ export function NewAlbumModal({show, setShow, userData, token}) {
     function handleUploadImageChange(e){
         if(!e)
             return;
-        console.log(e)
+        //console.log(e)
         setImage(URL.createObjectURL(e));
         setimageFile(e);
         setInsertImage(' ')

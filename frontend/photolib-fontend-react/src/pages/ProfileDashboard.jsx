@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ProfileComponent from '../components/ProfileComponent'
 import '../Components.css'
 import AlbumComponent, {NewAlbumModal} from '../components/AlbumComponent'
-import PhotosContainerComponent from '../components/PhotosContainerComponent'
+import PhotosContainerComponent, { NewPhotoModal } from '../components/PhotosContainerComponent'
 import { retrieveUserAlbumInformation, retrieveUserInformation, useQueryParams, AuthTokenExpired } from '../Utils/DataHelper'
 import { User } from '../objects/User'
 
@@ -13,8 +13,8 @@ function ProfileDashboard() {
   const [activeAlbum, setActiveAlbum] = useState('');
   const [showNewAlbumModal, setShowNewAlbumModal] = useState('hidden');
   const [token, setToken] = useState('');
+  const [photos, setPhotos] = useState([]);
   
-
   useEffect(()=>{
     // get the user data [API call]
     async function GetData(){
@@ -39,9 +39,9 @@ function ProfileDashboard() {
           setToken(authenticationToken);
 
           const userParsed = JSON.parse(cachedData).User;
-          
+          const albums = await retrieveUserAlbumInformation(userParsed.username)
           setUserData(userParsed);
-          setAlbums(JSON.parse(cachedData).Albums);
+          setAlbums(albums);
         }
       }
     }
@@ -60,9 +60,9 @@ function ProfileDashboard() {
             <div className='flex-block'>
                 <ProfileComponent UserInfo={userData} />
                 <div className='dashboard-flexblock'>
-                    <AlbumComponent albums={albums} callback={setActiveAlbum} addAlbumCallback={newAlbumCallback} />
+                    <AlbumComponent albums={albums} callback={setActiveAlbum} addAlbumCallback={newAlbumCallback} updatePhotos={setPhotos} />
                     <NewAlbumModal show={showNewAlbumModal} setShow={setShowNewAlbumModal} userData={userData} token={token}/>
-                    <PhotosContainerComponent currentAlbum={activeAlbum} />
+                    <PhotosContainerComponent currentAlbum={activeAlbum} photos={photos} />
                 </div>
             </div>
         </div>
