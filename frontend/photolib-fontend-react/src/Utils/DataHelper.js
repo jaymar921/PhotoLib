@@ -34,7 +34,7 @@ const LoginUserAsync = async (user, pass) => {
 }
 
 
-const GetUserInfoAsync = async (username, token) => {
+export const GetUserInfoAsync = async (username, token) => {
     await fetch(configData.SERVER_URL_AUTH_MICROSERVICE + "/User", {
         headers: {
             'Username': username
@@ -46,17 +46,20 @@ const GetUserInfoAsync = async (username, token) => {
         const user = d.user;
 
         const albums = await retrieveUserAlbumInformation(username);
-        
+        const USER_DATA = new User(
+            `${user.firstname} ${user.lastname}`,
+            user.bio,
+            username,
+            user.pronouns,
+            user.country,
+            user.views,
+            user.socials
+        )
+        USER_DATA.firstname = user.firstname;
+        USER_DATA.lastname = user.lastname;
+        USER_DATA.isPublic = user.isPublic;
         localStorage.setItem("token", JSON.stringify({
-            User: new User(
-                `${user.firstname} ${user.lastname}`,
-                user.bio,
-                username,
-                user.pronouns,
-                user.country,
-                user.views,
-                user.socials
-            ),
+            User: USER_DATA,
             AuthToken: token,
             Albums:albums
         }))
@@ -185,7 +188,6 @@ export async function CreateNewAlbum(userData, token, title, description, isPubl
 
     const getAlbumsResponseJson = await getAlbumsResponse.json();
 
-    console.log(getAlbumsResponseJson);
 
     let albumID = null;
     try{
@@ -245,11 +247,11 @@ export async function CreateNewAlbum(userData, token, title, description, isPubl
         redirect: 'follow'
     });
 
-    const imageApiResponseJson = await imageApiResponse.json();
+    await imageApiResponse.json();
 
    
 
-    console.log(imageApiResponseJson)
+    //console.log(imageApiResponseJson)
     
     setTimeout(()=> {
         window.location.href = '/';
@@ -398,7 +400,7 @@ export async function LoadPhotosInAlbum(albumData){
                     PhotoID: photoId
                 }
             });
-            console.log(resp)
+            //console.log(resp)
             const reader = resp.body.getReader();
             let chunks = []; 
         
