@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import ProfileComponent from '../components/ProfileComponent'
 import '../Components.css'
 import AlbumComponent, {NewAlbumModal} from '../components/AlbumComponent'
-import PhotosContainerComponent, { NewPhotoModal } from '../components/PhotosContainerComponent'
+import PhotosContainerComponent from '../components/PhotosContainerComponent'
 import { retrieveUserAlbumInformation, retrieveUserInformation, useQueryParams, AuthTokenExpired } from '../Utils/DataHelper'
 import { User } from '../objects/User'
+import NavComponent from '../components/NavComponent'
+import {IsLoggedIn} from '../Utils/Utility'
 
 function ProfileDashboard() {
   const params = useQueryParams();
@@ -14,12 +16,16 @@ function ProfileDashboard() {
   const [showNewAlbumModal, setShowNewAlbumModal] = useState('hidden');
   const [token, setToken] = useState('');
   const [photos, setPhotos] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   
   useEffect(()=>{
     // get the user data [API call]
     async function GetData(){
       if('user' in params){
         const data = await retrieveUserInformation(params.user)
+        if(data.username === "" && data.fullname === "")
+          // user not found then return back to login
+          window.location.href = "/login"
         setUserData(data);
         setAlbums(await retrieveUserAlbumInformation(params.user));
       }else{
@@ -42,12 +48,14 @@ function ProfileDashboard() {
           const albums = await retrieveUserAlbumInformation(userParsed.username)
           setUserData(userParsed);
           setAlbums(albums);
+        }else{
+          window.location.href = '/login'
         }
       }
     }
     GetData();
-
-    
+    setIsLoggedIn(IsLoggedIn())
+    // eslint-disable-next-line
   }, []);
 
   function newAlbumCallback(e){
@@ -56,6 +64,9 @@ function ProfileDashboard() {
 
   return (
     <>
+        {
+          isLoggedIn?<NavComponent />:""
+        }
         <div className='Profile-Dashboard'>
             <div className='flex-block'>
                 <ProfileComponent UserInfo={userData} />

@@ -2,9 +2,14 @@ import React, { useEffect, useRef, useState } from 'react'
 import ViewsComponent from './ViewsComponent';
 import { CreateNewAlbum, GetMonthYear, LoadPhotosInAlbum, getAlbumImage } from '../Utils/DataHelper';
 import Button, { Radio } from './Button';
+import { IsLoggedIn } from '../Utils/Utility';
 
 function AlbumComponent({albums, callback, addAlbumCallback, updatePhotos}) {
+    const [hasLoggedIn, setHasLoggedIn] = useState(false);
 
+    useEffect(()=> {
+        setHasLoggedIn(IsLoggedIn());
+    }, [])
 
   return (
     <div className='Album-Container'>
@@ -18,9 +23,11 @@ function AlbumComponent({albums, callback, addAlbumCallback, updatePhotos}) {
             }
             
         </div>
-        <Button styles={'top-Right'} onClick={addAlbumCallback}>
-            New Album
-        </Button>
+        {hasLoggedIn?(
+            <Button styles={'top-Right'} onClick={addAlbumCallback}>
+                New Album
+            </Button>
+        ):""}
     </div>
   )
 }
@@ -34,7 +41,7 @@ export function Album({data, callback, updatePhotos}){
         }
 
        loadAlbumImage();
-    }, [])
+    }, [data.guid])
     return (
         <div className='Album' onClick={(e)=> {
                 callback(data);

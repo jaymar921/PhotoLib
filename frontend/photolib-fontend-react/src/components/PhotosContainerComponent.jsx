@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import Photo, { DisplayPhoto } from './Photo'
 import Button from './Button'
-import { GetMonthYear, LoadPhotosInAlbum, UploadPhotoInAlbum } from '../Utils/DataHelper';
+import { GetMonthYear, UploadPhotoInAlbum } from '../Utils/DataHelper';
+import { IsLoggedIn } from '../Utils/Utility';
 
 function PhotosContainerComponent({currentAlbum, photos}) {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showImage, setShowImage] = useState('');
+  const [hasLoggedIn, setHasLoggedIn] = useState(false);
 
   const [activePhoto, setActivePhoto] = useState(null)
 
+  useEffect(() => {
+    setHasLoggedIn(IsLoggedIn());
+  }, [])
+
   if(!currentAlbum)
     return; 
-  function handleLoadMoreCallback(e){
-    console.log(e)
-  }
   
   return (
     <div className='Photos-Container'>
@@ -26,11 +29,11 @@ function PhotosContainerComponent({currentAlbum, photos}) {
                 
                 <div className='date'>
                     <p>{GetMonthYear(currentAlbum.albumState.dateCreated).join(" ")}</p>
-                    <Button onClick={(e)=> {
+                    {hasLoggedIn?(<Button onClick={(e)=> {
                         setShowUploadModal(!showUploadModal);
                       }}>
                         Add Photo
-                    </Button>
+                    </Button>): ""}
                 </div>
             </div>
         </div>
@@ -40,7 +43,7 @@ function PhotosContainerComponent({currentAlbum, photos}) {
             if(photo.image){
               return <Photo key={Math.floor(Math.random()* 999999)} src={photo.image} setActive={setActivePhoto} metaData={photo} setShowDisplay={setShowImage}/>
             }
-              
+            return ""
           })
         }
         {/*

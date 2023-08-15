@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../App.css'
 import '../Components.css'
 
@@ -12,14 +12,18 @@ function Button(props) {
 
 export function Radio(props) {
   const [check, setCheck] = useState(false);
-  const {getValue} = props;
+  const {getValue, setValue} = props;
 
-  
+  useEffect(()=> {
+    if(setValue === undefined)
+      return;
+    setCheck(setValue)
+  }, [setValue, getValue, check])
   return (
     <div className='radio'>
       <div>
         <label>
-          <input type="checkbox" className="toggle-checkbox" value={check} onClick={() => {setCheck(!check);getValue(!check)}}/>
+          <input type="checkbox" className="toggle-checkbox" checked={check} onChange={(e)=> {setCheck(!check);getValue(!check)}}/>
           <div className="toggle-switch"></div>
         </label>
       </div>

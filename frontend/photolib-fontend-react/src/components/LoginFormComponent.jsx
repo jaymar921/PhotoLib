@@ -4,10 +4,20 @@ import '../Components.css';
 function LoginFormComponent({apiCallOnSubmit, status}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
+    const onSubmitForm = async (e) => {
+        e.preventDefault();
+
+        setIsLoading(true);
+
+        await apiCallOnSubmit({username, password});
+        setPassword('')
+        setIsLoading(false);
+    }
     return (
         
-        <form className='loginForm'>
+        <form className='loginForm' onSubmit={onSubmitForm}>
             <div className='Title'>
                 <h2>Welcome to PictoLib</h2>
                 <p>Showcase your hobby</p>
@@ -32,9 +42,7 @@ function LoginFormComponent({apiCallOnSubmit, status}) {
             <span>{status}</span>
 
             
-            <button className='btn-submit btn-center' type='button' onClick={(e) => {
-                apiCallOnSubmit({username, password});
-            }}>Login</button>
+            <button className='btn-submit btn-center' type='submit' disabled={isLoading}>{isLoading?"Loading...":"Login"}</button>
             
             
 

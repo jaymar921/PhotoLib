@@ -17,7 +17,7 @@ function Photo({src, text, onClick, metaData, setActive, setShowDisplay}) {
         setShowDisplay('');
     }}>
         <div className='Image-Container'>
-            <img src={src} />    
+            <img alt={src} src={src} />    
             {text}
         </div>
     </div>
@@ -30,7 +30,6 @@ export function DisplayPhoto({data, show, setShow}){
   if(!image)
     return;
 
-  console.log(image)
   return (
     <div id='show-image-modal' className={`photo-modal ${show}`} onClick={(e)=> {
       if(e.target.id === 'show-image-modal')
@@ -38,9 +37,9 @@ export function DisplayPhoto({data, show, setShow}){
     }}>
       <div className='photo'>
         <div className='photo-container'>
-          <img src={image.imageSrc}/>
+          <img alt={image.imageSrc} src={image.imageSrc}/>
         </div>
-        <p className='caption'>{image.metaData.caption}<ViewsComponent views={image.metaData.views}/></p>
+        <div className='caption'>{image.metaData.caption}<ViewsComponent views={image.metaData.views}/></div>
         
       </div>
 

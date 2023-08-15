@@ -25,14 +25,14 @@ function ProfileComponent({UserInfo = new User()}) {
             setShowBio('');
         if(UserInfo.socials.length > 0)
             setShowSocials('');
-    }, []);
+    }, [UserInfo.bio, UserInfo.socials.length]);
 
   return (
     <>
         <div className='Profile-Container'>
             <br />
             <div className='Profile-Image'>
-                <img src='./assets/myself.jpg'/>
+                <img alt='' src='https://bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg'/>
             </div>
             <div className='Profile-Info'>
                 <h1 className='FullName'>{UserInfo.fullname}</h1>

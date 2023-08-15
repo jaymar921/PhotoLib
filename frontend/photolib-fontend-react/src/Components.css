@@ -428,6 +428,14 @@
     cursor: pointer;
     background-color: rgba(17, 17, 17, 0.8);
 }
+
+.width100p{
+    width: 100%;
+}
+
+.darker{
+    background-color: #000000;
+}
 .btn-center{
     position: relative;
     left: 50%;
@@ -637,6 +645,181 @@
     width: 100%;
 }
 
+.nav{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 0px 0px 20px 0px;
+    background-color: rgba(0,0,0,0.8);
+    text-align: center;
+}
+
+.nav-modal, .update-modal{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 9999;
+}
+.nav-center{
+    position: absolute;
+    width: fit-content;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.nav-center button{
+    display: flex;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 20px;
+}
+
+.update-modal{
+    z-index: 10000;
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.update-modal .profile-form{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.profile-form form{
+    position: relative;
+    background-color: #272727;
+    overflow: hidden;
+    padding: 20px;
+    width: 300px;
+    border-radius: 20px;
+}
+.profile-form form > div{
+    overflow: hidden;
+}
+.profile-form form div label{
+    font-weight: 600;
+}
+.profile-form form div label,
+.profile-form form div input{
+    display: block;
+    font-size: 15px;
+}
+
+.profile-form form div input,
+.profile-form form div textarea,
+.profile-form form div select{
+    width: 100%;
+    font-size: 15px;
+    padding: 5px;
+}
+
+.input-design{
+    position: relative;
+    border: none;
+    outline: none;
+    color: white;
+    overflow: hidden;
+    height: fit-content;
+}
+
+.input-design .smallFont,
+.input-design input,
+.input-design textarea,
+.input-design select{
+    background-color: #4b4b4b;
+    outline: none;
+    color: white;
+    font-weight: 700;
+    border: 1px solid #2e2e2e;
+}
+
+
+.input-design .counter{
+    position: absolute;
+    font-weight: 999;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    padding: 5px;
+    font-size: 10px;
+    color: rgb(134, 134, 134);
+}
+
+.red{
+    color: rgb(199, 0, 0);
+}
+
+.input-design textarea{
+    height: 70px;
+}
+
+.input-design .smallFont:not(select){
+    border: 2px solid #2e2e2e;
+}
+
+.profile-socials{
+    background-color: #1a1a1a;
+    display: flex;
+    font-size: 10px;
+    margin: 10px 0px 10px 0px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.profile-socials > div{
+    margin: 5px;
+}
+
+.profile-socials .smallFont{
+    font-size: 12px;
+}
+
+.socials-holder{
+    transition: all 1s ease-in ;
+    opacity: 1;
+}
+
+.showOpacity{
+    animation: show 1s ease-in;
+}
+
+.hideOpacity{
+    animation: show2 1s ease-in;
+}
+
+@keyframes show {
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 0.5;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes show2 {
+    0%{
+        opacity: 1;
+    }
+    50%{
+        opacity: 0.5;
+    }
+    100%{
+        opacity: 0;
+    }
+}
 /*
     Mobile Responsive
 */
