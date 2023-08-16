@@ -1,0 +1,6 @@
+﻿namespace PhotoLib.PhotoMicroService.API.wwwroot.Images
+{
+    public class FILES_WILL_BE_UPLOADED_HERE
+    {
+    }
+}

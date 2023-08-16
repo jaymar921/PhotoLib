@@ -26,8 +26,4 @@
     <ProjectReference Include="..\PhotoLib.SystemCore.Libraries\PhotoLib.SystemCore.Libraries.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\Images\profile\" />
-  </ItemGroup>
-
 </Project>

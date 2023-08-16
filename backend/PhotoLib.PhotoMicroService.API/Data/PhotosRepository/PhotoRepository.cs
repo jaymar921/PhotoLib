@@ -16,9 +16,16 @@ namespace PhotoLib.PhotoMicroService.API.Data.PhotosRepository
 
         public bool Add(Photo entity)
         {
-            photoDbContext.Photos.Add(entity);
-            photoDbContext.SaveChanges();
-            return true;
+            try
+            {
+                photoDbContext.Photos.Add(entity);
+                photoDbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public bool Delete(Guid guid)

@@ -141,6 +141,15 @@ namespace PhotoLib.PhotoMicroService.API.Controllers
 
             Guid imageUID = Guid.NewGuid();
 
+            if(null != photo.PhotoId) 
+            {
+                string photoId = photo.PhotoId?.ToString() ?? "";
+                try
+                {
+                    imageUID = Guid.Parse(photoId);
+                }catch(Exception) { /* ignore */ }
+            }
+
             // prepare the file for upload
             CachedPhotoData.GetChachedPhoto().Add(imageUID, photo);
 
@@ -199,7 +208,7 @@ namespace PhotoLib.PhotoMicroService.API.Controllers
                         Directory.CreateDirectory(Path.Combine(webHostEnvironment.WebRootPath, "Images/", $"{ImagePath}/{photoDTO.AlbumID}/"));
                     }
 
-                    using(FileStream stream = new FileStream(savePath, FileMode.CreateNew))
+                    using(FileStream stream = new FileStream(savePath, FileMode.OpenOrCreate))
                     {
                         await Image.CopyToAsync(stream);
                         stream.Close();
@@ -214,12 +223,12 @@ namespace PhotoLib.PhotoMicroService.API.Controllers
                         Caption = photoDTO.Caption ?? "",
                         DateCreated = DateTime.Now,
                     };
-
-                    repository.Add(photo);
+                    if(repository.Get(photo.Guid).Guid == Guid.Empty)
+                        repository.Add(photo);
                 }
             }
-            
 
+            CachedPhotoData.GetChachedPhoto().Remove(ParsedImageID);
             return Ok(new { Message = "File was uploaded "});
         }
 
@@ -272,10 +281,9 @@ namespace PhotoLib.PhotoMicroService.API.Controllers
 
                 if (System.IO.File.Exists(path))
                     System.IO.File.Delete(path);
-
-                repository.Delete(photo);
             }
-            
+            repository.Delete(photo.Guid);
+
             return Ok(new { Message = "Image was deleted" });
         }
     }
