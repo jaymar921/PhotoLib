@@ -24,3 +24,11 @@ services:
       - 5053:80
     depends_on:
       - asp_net_photolib_auth_microservice
+
+  
+  react_frontend_photolib:
+    build: 
+      context: frontend/photolib-fontend-react/
+      dockerfile: Dockerfile
+    ports:
+      - 5000:3000
