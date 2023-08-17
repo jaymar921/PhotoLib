@@ -21,7 +21,7 @@ function LoginPage() {
 
     return (
         <div className='LoginUI'>
-            <LoginFormComponent status={loginStatus} apiCallOnSubmit={apiCallOnSubmit} />
+            <LoginFormComponent status={loginStatus} setStatus={setLoginStatus} apiCallOnSubmit={apiCallOnSubmit} />
         </div>
     )
 }

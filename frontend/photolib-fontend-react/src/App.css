@@ -13,7 +13,12 @@ body{
   width: 100%;
 }
 
-
+.input-error{
+  position: absolute;
+  border: 10px solid orange;
+  background-color: red;
+  color: rgb(199, 0, 0);
+}
 .btn-generic{
   position: relative;
   background-color: #161616;
