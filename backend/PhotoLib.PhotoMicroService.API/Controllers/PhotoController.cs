@@ -233,6 +233,44 @@ namespace PhotoLib.PhotoMicroService.API.Controllers
             return Ok(new { Message = "File was uploaded "});
         }
 
+        [HttpPatch]
+        public async Task<IActionResult> Patch()
+        {
+            ApiRequest authApiResult = await AuthAPI.CheckHeaderToken(Request);
+
+            // if statuscode == 400, return badrequest
+            if (authApiResult.StatusCode == 400)
+            {
+                return BadRequest(authApiResult);
+            }
+            // if statuscode == 401, return unauthorized
+            if (authApiResult.StatusCode == 401)
+            {
+                return Unauthorized(authApiResult);
+            }
+
+            if (!Request.Headers.TryGetValue("ImageID", out var ImageID))
+                return BadRequest(new { Message = "ImageID is required" });
+
+            Request.Headers.TryGetValue("Caption", out var caption);
+
+            string captionStr = caption.ToString();
+
+            Guid.TryParse(ImageID, out var parsedImageID);
+
+            if (parsedImageID == Guid.Empty)
+                return NotFound(new { Message = "Image Data not found" });
+
+            var photo = repository.Get(parsedImageID);
+            if(photo.Guid != Guid.Empty)
+            {
+                photo.Caption = captionStr;
+                repository.Update(photo);
+            }
+
+            return Ok(new { Message = "Image Patched" });
+        }
+
         [HttpDelete]
         public async Task<IActionResult> Delete()
         {
