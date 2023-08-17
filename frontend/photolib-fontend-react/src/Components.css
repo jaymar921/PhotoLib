@@ -797,6 +797,33 @@
     animation: show2 1s ease-in;
 }
 
+.update-profile-modal{
+    position: absolute;
+    z-index: 999;
+}
+
+.image-box{
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+.image-box img{
+    width: 100%;
+}
+
+.input-special-lg,.input-special-md{
+    font-size: 25px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    border-bottom: 2px dashed white;
+}
+
+.input-special-md{
+    font-size: 15px;
+}
+
+
 @keyframes show {
     0%{
         opacity: 0;

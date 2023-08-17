@@ -3,11 +3,13 @@ import '../Components.css';
 import ViewsComponent from './ViewsComponent';
 import Social from './Social';
 import { User } from '../objects/User';
-import { GetSocialLink } from '../Utils/DataHelper';
+import { GetSocialLink, LoadPhoto, UploadPhoto } from '../Utils/DataHelper';
+import { GetOfflineUserData } from '../Utils/Utility';
 
 function ProfileComponent({UserInfo = new User()}) {
     const [showBio, setShowBio] = useState('hidden');
     const [showSocials, setShowSocials] = useState('hidden');
+    const [userPhoto, setUserPhoto] = useState(null);
 
     const copyLinkUrl = () => {
         var dummy = document.createElement('input'),
@@ -25,14 +27,34 @@ function ProfileComponent({UserInfo = new User()}) {
             setShowBio('');
         if(UserInfo.socials.length > 0)
             setShowSocials('');
+        const loadUserPhoto = async() => {
+            setUserPhoto(await LoadPhoto("profile"))
+        }
+        loadUserPhoto();
     }, [UserInfo.bio, UserInfo.socials.length]);
+
+    const ClickUpdatePhoto = () => {
+        document.getElementById('profile-image-upload').click();
+    }
+
+    const UpdatePhoto = async ({target}) => {
+        const image = target.files[0];
+        UploadPhoto(image, "profile", "Profile Photo")
+        setTimeout(async()=> {
+            setUserPhoto(await LoadPhoto("profile"))
+        }, 1000)
+    }
 
   return (
     <>
+        <div className='update-profile-modal'>
+        
+        </div>
         <div className='Profile-Container'>
             <br />
-            <div className='Profile-Image'>
-                <img alt='' src='https://bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg'/>
+            <div className='Profile-Image' onClick={ClickUpdatePhoto}>
+                <input id='profile-image-upload' type='file' accept="image/*" hidden onChange={UpdatePhoto} />
+                <img alt='' src={`${userPhoto!==null?userPhoto:'https://bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg'}`}/>
             </div>
             <div className='Profile-Info'>
                 <h1 className='FullName'>{UserInfo.fullname}</h1>

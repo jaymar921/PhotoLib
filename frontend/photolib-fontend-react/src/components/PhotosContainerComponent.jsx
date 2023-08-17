@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import Photo, { DisplayPhoto } from './Photo'
 import Button from './Button'
-import { GetMonthYear, UploadPhotoInAlbum } from '../Utils/DataHelper';
+import { APIUpdateAlbum, GetMonthYear, UploadPhotoInAlbum } from '../Utils/DataHelper';
 import { IsLoggedIn } from '../Utils/Utility';
 
 function PhotosContainerComponent({currentAlbum, photos}) {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showImage, setShowImage] = useState('');
   const [hasLoggedIn, setHasLoggedIn] = useState(false);
-
   const [activePhoto, setActivePhoto] = useState(null)
+  const [updateToggle, setUpdateToggle] = useState(false)
 
   useEffect(() => {
     setHasLoggedIn(IsLoggedIn());
@@ -17,15 +17,71 @@ function PhotosContainerComponent({currentAlbum, photos}) {
 
   if(!currentAlbum)
     return; 
+
   
+  function updateAlbumInformation({target:element}){
+    if(updateToggle)
+      return;
+    setUpdateToggle(true)
+    const innerHtmlContent = element.innerHTML;
+    const elementId = element.id;
+    if(innerHtmlContent === ''){
+      return;
+    }
+    const inputEl = document.createElement('input');
+    inputEl.type = 'text';
+    inputEl.id   = 'update-'+elementId;
+    if('album-title' === elementId){
+      inputEl.className = "input-special-lg"
+      inputEl.oninput = Input_UpdateTitle;
+    }else{
+      inputEl.className = "input-special-md"
+    }
+    inputEl.value = innerHtmlContent.split('-')[0].trim();
+
+    const btnSave = document.createElement('button');
+    btnSave.id = `update-${elementId}-btn`;
+    btnSave.type = 'button';
+    btnSave.className = "btn-generic"
+    btnSave.textContent = "Save";
+    btnSave.onclick = () => {SaveChanges(elementId)};
+
+    element.innerHTML = "";
+    element.appendChild(inputEl)
+    element.appendChild(btnSave)
+  }
+
+  function Input_UpdateTitle(e){
+    if(e.target.value.length === 0)
+      e.target.value = currentAlbum.title;
+  }
+
+  function SaveChanges(option){
+    const element = document.getElementById(option)
+    console.log(element)
+    if(option && element){
+      // get the input element value
+      const inputEl = document.getElementById('update-'+option);
+      const value = inputEl.value;
+      if(!value)
+        return;
+      
+      element.innerHTML = value;
+      if('album-title' === option)
+        APIUpdateAlbum(currentAlbum.guid, value, currentAlbum.description, currentAlbum.albumState.isPublic)
+      if('album-desc' === option)
+        APIUpdateAlbum(currentAlbum.guid, currentAlbum.title, value, currentAlbum.albumState.isPublic)
+    }
+  }
+
   return (
     <div className='Photos-Container'>
         <DisplayPhoto data={activePhoto} show={showImage} setShow={setShowImage}/>
         <NewPhotoModal showModal={showUploadModal} setShowModal={setShowUploadModal} currentAlbum={currentAlbum}/>
         <div className='Title'>
             <div className='info'>
-                <h3>{currentAlbum.title} - Photos</h3>
-                <p>{currentAlbum.description}</p>
+                <h3 id='album-title' onClick={updateAlbumInformation}>{currentAlbum.title} - Photos</h3>
+                <p id='album-desc' onClick={updateAlbumInformation}>{currentAlbum.description}</p>
                 
                 <div className='date'>
                     <p>{GetMonthYear(currentAlbum.albumState.dateCreated).join(" ")}</p>

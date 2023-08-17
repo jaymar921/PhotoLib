@@ -24,6 +24,7 @@ export function GetOfflineUserData(){
     user.firstname = offlineUser.firstname;
     user.isPublic = offlineUser.isPublic;
     user.AuthToken = JSON.parse(offlineData).AuthToken;
+    user.UserID = offlineUser.userid;
     return user;
 }
 

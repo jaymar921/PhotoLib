@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import configData from '../config.json';
 import { User } from '../objects/User';
 import config from '../config.json';
+import { GetOfflineUserData } from './Utility';
 
 const LoginUserAsync = async (user, pass) => {
     let status = '';
@@ -58,10 +59,12 @@ export const GetUserInfoAsync = async (username, token) => {
         USER_DATA.firstname = user.firstname;
         USER_DATA.lastname = user.lastname;
         USER_DATA.isPublic = user.isPublic;
+        USER_DATA.userid = d.userId;
+
         localStorage.setItem("token", JSON.stringify({
             User: USER_DATA,
             AuthToken: token,
-            Albums:albums
+            Albums:albums,
         }))
         window.location = '/'
     });
@@ -162,7 +165,7 @@ export async function CreateNewAlbum(userData, token, title, description, isPubl
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            userID: "00000000-0000-0000-0000-000000000000",
+            userID: GetOfflineUserData().UserID,
             dateCreated: new Date().toISOString(),
             dateLastModified: new Date().toISOString(),
             title: title,
@@ -259,6 +262,28 @@ export async function CreateNewAlbum(userData, token, title, description, isPubl
     
 }
 
+export async function APIUpdateAlbum(albumID, title, description, isPublic){
+    const userData = GetOfflineUserData();
+    await fetch(config.SERVER_URL_ALBUM_MICROSERVICE+"/Album",{
+        method: "PUT",
+        headers:{
+            AlbumID: albumID,
+            AuthToken: userData.AuthToken,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            userID: userData.UserID,
+            dateCreated: new Date().toISOString(),
+            dateLastModified: new Date().toISOString(),
+            title: title,
+            description,
+            views: 0,
+            isPublic
+        })
+    })
+    window.location.href = "/"
+}
+
 export async function getAlbumImage(albumID){
     let imageID = null;
 
@@ -284,6 +309,40 @@ export async function getAlbumImage(albumID){
     });
 
     const reader = resp.body.getReader();
+    let chunks = [];
+
+    
+    let imageFile;
+    await reader.read().then(function processText({ done, value }) {
+        
+
+        if (done) {
+            //console.log('Stream finished. Content received:')
+
+            //console.log(chunks);
+
+
+            const blob = new Blob([chunks], { type: "image/png" });
+            //console.log(blob);
+
+            imageFile = URL.createObjectURL(blob);
+            return
+        }
+
+        //console.log(`Received ${chunks.length} chars so far!`)
+        // console.log(value);
+        const tempArray = new Uint8Array(chunks.length + value.length);
+        tempArray.set(chunks);
+        tempArray.set(value, chunks.length);
+        chunks = tempArray
+
+        return reader.read().then(processText)
+    });
+    
+    return imageFile;
+}
+
+async function ReadStream(reader){
     let chunks = [];
 
     
@@ -366,6 +425,90 @@ export async function UploadPhotoInAlbum(payload){
 
     window.location.href = '/'
     
+}
+
+export async function DeletePhoto(path, id, auth){
+    // check if image exists
+    const photoStream = await fetch(configData.SERVER_URL_PHOTO_MICROSERVICE+"/photo/image",{
+        headers:{
+            Path: path,
+            PhotoID: id
+        }
+    })
+
+    if(photoStream.ok){
+        // delete
+        try{
+            await fetch(configData.SERVER_URL_PHOTO_MICROSERVICE+"/photo",{
+                method: 'DELETE',
+                headers:{
+                    AuthToken: auth,
+                    Path: path,
+                    PhotoID: id
+                }
+            })
+        }catch{}
+    }
+}
+
+
+export async function LoadPhoto(path){
+    const offlineData = GetOfflineUserData();
+    const photoStream = await fetch(configData.SERVER_URL_PHOTO_MICROSERVICE+"/photo/image",{
+        headers:{
+            Path: path,
+            PhotoID: offlineData.UserID
+        }
+    })
+
+    if(!photoStream.ok)
+        return null;
+    try{
+        return await ReadStream(photoStream.body.getReader());
+    }catch(e){
+        return null;
+    }
+}
+export async function UploadPhoto(image, path, caption){
+    const offlineData = GetOfflineUserData();
+
+    DeletePhoto("profile", offlineData.UserID, offlineData.AuthToken);
+    // prepare the file for upload, call the upload photo api
+    const apiRes = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo", {
+        method: "POST",
+        headers: {
+            AuthToken: offlineData.AuthToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "photoId": offlineData.UserID,
+            "albumID": "00000000-0000-0000-0000-000000000000",
+            "caption": caption,
+            "dateCreated": new Date().toISOString(),
+            "views": 0
+        })
+    })
+
+    const JsonRes = await apiRes.json();
+
+    const imageID = JsonRes.imageID;
+
+    const formData = new FormData();
+    formData.append('Image', image);
+
+    const imageApiRes = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo/Image",{
+        method: "POST",
+        headers:{
+            AuthToken : offlineData.AuthToken,
+            ImageID: imageID,
+            Path: path
+        },
+        body: formData,
+        redirect: 'follow'
+    })
+
+    const imageApiJson = await imageApiRes.json();
+    console.log(imageApiJson);
 }
 
 export async function LoadPhotosInAlbum(albumData){

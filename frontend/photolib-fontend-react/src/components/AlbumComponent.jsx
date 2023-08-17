@@ -58,7 +58,7 @@ export function Album({data, callback, updatePhotos}){
             <div className='info'>
                 <h2>{data.title}</h2>
                 <p>{GetMonthYear(data.albumState.dateCreated).join(" ")}</p>
-                <ViewsComponent views={data.albumState.views} />
+                {/* <ViewsComponent views={data.albumState.views} /> */}
             </div>
             
         </div>
@@ -114,7 +114,7 @@ export function NewAlbumModal({show, setShow, userData, token}) {
             setErrorMessage("Image should be provided");
             return;
         }
-
+        
         CreateNewAlbum(userData, token,title, description, isPublic, imageFile)
     }
   return (
