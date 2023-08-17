@@ -146,7 +146,8 @@ namespace PhotoLib.PhotoMicroService.API.Controllers
                 string photoId = photo.PhotoId?.ToString() ?? "";
                 try
                 {
-                    imageUID = Guid.Parse(photoId);
+                    var parsedId = Guid.Parse(photoId)!=Guid.Empty? Guid.Parse(photoId):Guid.NewGuid();
+                    imageUID = parsedId;
                 }catch(Exception) { /* ignore */ }
             }
 
