@@ -4,7 +4,6 @@ import ViewsComponent from './ViewsComponent';
 import Social from './Social';
 import { User } from '../objects/User';
 import { GetSocialLink, LoadPhoto, UploadPhoto } from '../Utils/DataHelper';
-import { GetOfflineUserData } from '../Utils/Utility';
 
 function ProfileComponent({UserInfo = new User()}) {
     const [showBio, setShowBio] = useState('hidden');

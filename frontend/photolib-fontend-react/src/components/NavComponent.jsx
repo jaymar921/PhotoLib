@@ -3,7 +3,7 @@ import '../Components.css'
 import Button, { Radio } from './Button'
 import { GetCountries, GetOfflineUserData } from '../Utils/Utility';
 import {GetUserInfoAsync} from '../Utils/DataHelper'
-import config from '../config.json'
+import {config} from '../config'
 
 function NavComponent() {
     const [showUpdateModal, setShowUpdateModal] = useState('hidden');

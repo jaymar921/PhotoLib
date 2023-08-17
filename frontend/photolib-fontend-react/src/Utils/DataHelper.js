@@ -1,12 +1,11 @@
 import { useLocation } from 'react-router-dom';
-import configData from '../config.json';
 import { User } from '../objects/User';
-import config from '../config.json';
+import {config} from '../config';
 import { GetOfflineUserData } from './Utility';
 
 const LoginUserAsync = async (user, pass) => {
     let status = '';
-    await fetch(configData.SERVER_URL_AUTH_MICROSERVICE + "/Auth", {
+    await fetch(config.SERVER_URL_AUTH_MICROSERVICE + "/Auth", {
         headers:{
             "Username" : user,
             "Password" : pass
@@ -36,7 +35,7 @@ const LoginUserAsync = async (user, pass) => {
 
 
 export const GetUserInfoAsync = async (username, token) => {
-    await fetch(configData.SERVER_URL_AUTH_MICROSERVICE + "/User", {
+    await fetch(config.SERVER_URL_AUTH_MICROSERVICE + "/User", {
         headers: {
             'Username': username
         },
@@ -73,7 +72,7 @@ export const GetUserInfoAsync = async (username, token) => {
 export async function AuthTokenExpired(token) {
     let verified = false;
 
-    await fetch(configData.SERVER_URL_AUTH_MICROSERVICE+"/auth",{
+    await fetch(config.SERVER_URL_AUTH_MICROSERVICE+"/auth",{
         headers:{
             AuthToken: token
         }
@@ -96,7 +95,7 @@ export function useQueryParams(){
 
 export async function retrieveUserInformation(username){
     const user = new User();
-    await fetch(configData.SERVER_URL_AUTH_MICROSERVICE + "/User", {
+    await fetch(config.SERVER_URL_AUTH_MICROSERVICE + "/User", {
         headers: {
             'Username': username
         },
@@ -429,7 +428,7 @@ export async function UploadPhotoInAlbum(payload){
 
 export async function DeletePhoto(path, id, auth){
     // check if image exists
-    const photoStream = await fetch(configData.SERVER_URL_PHOTO_MICROSERVICE+"/photo/image",{
+    const photoStream = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/photo/image",{
         headers:{
             Path: path,
             PhotoID: id
@@ -439,7 +438,7 @@ export async function DeletePhoto(path, id, auth){
     if(photoStream.ok){
         // delete
         try{
-            await fetch(configData.SERVER_URL_PHOTO_MICROSERVICE+"/photo",{
+            await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/photo",{
                 method: 'DELETE',
                 headers:{
                     AuthToken: auth,
@@ -454,7 +453,7 @@ export async function DeletePhoto(path, id, auth){
 
 export async function LoadPhoto(path){
     const offlineData = GetOfflineUserData();
-    const photoStream = await fetch(configData.SERVER_URL_PHOTO_MICROSERVICE+"/photo/image",{
+    const photoStream = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/photo/image",{
         headers:{
             Path: path,
             PhotoID: offlineData.UserID

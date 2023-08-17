@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import ViewsComponent from './ViewsComponent';
 import { CreateNewAlbum, GetMonthYear, LoadPhotosInAlbum, getAlbumImage } from '../Utils/DataHelper';
 import Button, { Radio } from './Button';
 import { IsLoggedIn } from '../Utils/Utility';

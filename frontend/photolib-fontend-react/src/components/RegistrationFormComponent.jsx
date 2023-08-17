@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import '../Components.css';
-import { GoogleLogin } from '@react-oauth/google';
-import config from '../config.json';
+import {config} from '../config';
 
 function RegistrationFormComponent() {
     const [username, setUsername] = useState('');
@@ -15,7 +14,6 @@ function RegistrationFormComponent() {
     const [passwordValidation, setPasswordValidation] = useState([false, false, false, false])
     const [emailFocus, setEmailFocus] = useState(false);
     const [emailMessage, setEmailMessage] = useState('❓ Empty field')
-
 
     function handleCredentialResponse(response) {
         // if there is a response
