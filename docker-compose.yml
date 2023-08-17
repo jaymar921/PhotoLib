@@ -32,3 +32,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - 5000:3000
+    environment:
+      - REACT_APP_SERVER_URL_AUTH_MICROSERVICE=http://localhost:5051/api
+      - REACT_APP_SERVER_URL_ALBUM_MICROSERVICE=http://localhost:5052/api
+      - REACT_APP_SERVER_URL_PHOTO_MICROSERVICE=http://localhost:5053/api
