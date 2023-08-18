@@ -859,6 +859,14 @@
     font-size: 15px;
 }
 
+.w300{
+    width: 300px;
+}
+
+.bld{
+    font-weight: 700;
+}
+
 
 @keyframes show {
     0%{

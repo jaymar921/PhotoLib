@@ -65,6 +65,8 @@ export const GetUserInfoAsync = async (username, token) => {
             AuthToken: token,
             Albums:albums,
         }))
+
+
         window.location = '/'
     });
 }
@@ -107,7 +109,7 @@ export async function retrieveUserInformation(username){
             return;
 
         const userData = d.user;
-        
+
         user.fullname = `${userData.firstname} ${userData.lastname}`;
         user.country = userData.country;
         user.socials = userData.socials;
@@ -115,6 +117,8 @@ export async function retrieveUserInformation(username){
         user.pronouns = userData.pronouns;
         user.username = username;
         user.bio = userData.bio;
+
+        localStorage.setItem('temporaryID', d.userId)
     });
 
     return user;
@@ -453,10 +457,14 @@ export async function DeletePhoto(path, id, auth){
 
 export async function LoadPhoto(path){
     const offlineData = GetOfflineUserData();
+    let userID = localStorage.getItem('temporaryID');
+    if(offlineData)
+        userID = offlineData.UserID;
+
     const photoStream = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/photo/image",{
         headers:{
             Path: path,
-            PhotoID: offlineData.UserID
+            PhotoID: userID
         }
     })
 

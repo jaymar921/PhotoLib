@@ -208,7 +208,7 @@ function RegistrationFormComponent() {
             message = '😊 yeeaaay!';
         }
         setEmailMessage(message)
-        console.log(pass_1 && pass_2 && pass_3 && pass_4 && pass_5)
+        
         return pass_1 && pass_2 && pass_3 && pass_4 && pass_5;
     }
 
