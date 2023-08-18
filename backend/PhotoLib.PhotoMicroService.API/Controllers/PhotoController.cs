@@ -300,29 +300,35 @@ namespace PhotoLib.PhotoMicroService.API.Controllers
             if (Guid.Empty == photo.Guid)
                 return NotFound(new { Message = "Image was not found, failed to delete file" });
 
-            var path = Path.Combine(webHostEnvironment.WebRootPath, "Images\\", $"{ImagePath}\\{photo.AlbumID}\\");
-
-
-            string[] files = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly);
-            string fileFound = string.Empty;
-            foreach (string file in files)
+            try
             {
-                if (file.Contains(photo.Guid.ToString()))
+                var path = Path.Combine(webHostEnvironment.WebRootPath, "Images", ImagePath.ToString(), photo.AlbumID.ToString());
+
+
+                string[] files = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly);
+                string fileFound = string.Empty;
+                foreach (string file in files)
                 {
-                    fileFound = file;
-                    break;
+                    if (file.Contains(photo.Guid.ToString()))
+                    {
+                        fileFound = file;
+                        break;
+                    }
                 }
-            }
 
-            if (string.Empty != fileFound)
+                if (string.Empty != fileFound)
+                {
+                    path = Path.Combine(path, fileFound);
+
+                    if (System.IO.File.Exists(path))
+                        System.IO.File.Delete(path);
+                }
+                repository.Delete(photo.Guid);
+            }
+            catch (Exception)
             {
-                path = Path.Combine(path, fileFound);
-
-                if (System.IO.File.Exists(path))
-                    System.IO.File.Delete(path);
+                return NoContent();
             }
-            repository.Delete(photo.Guid);
-
             return Ok(new { Message = "Image was deleted" });
         }
     }
