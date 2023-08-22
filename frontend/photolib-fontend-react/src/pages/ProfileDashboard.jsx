@@ -17,6 +17,7 @@ function ProfileDashboard() {
   const [token, setToken] = useState('');
   const [photos, setPhotos] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [readySwitch, setReadySwitch] = useState(false)
   
   useEffect(()=>{
     // get the user data [API call]
@@ -71,9 +72,9 @@ function ProfileDashboard() {
             <div className='flex-block'>
                 <ProfileComponent UserInfo={userData} />
                 <div className='dashboard-flexblock'>
-                    <AlbumComponent albums={albums} active={activeAlbum} callback={setActiveAlbum} addAlbumCallback={newAlbumCallback}/>
+                    <AlbumComponent updatePhotos={setPhotos} albums={albums}active={activeAlbum} callback={setActiveAlbum} addAlbumCallback={newAlbumCallback} readySwitch={readySwitch}/>
                     <NewAlbumModal show={showNewAlbumModal} setShow={setShowNewAlbumModal} userData={userData} token={token}/>
-                    <PhotosContainerComponent currentAlbum={activeAlbum} photos={photos} updatePhotos={setPhotos}/>
+                    <PhotosContainerComponent currentAlbum={activeAlbum} photos={photos} updatePhotos={setPhotos} setReadySwitch={setReadySwitch}/>
                 </div>
             </div>
         </div>

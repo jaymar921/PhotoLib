@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../Components.css'
-import ViewsComponent from './ViewsComponent';
 import { config } from '../config';
 import { GetOfflineUserData } from '../Utils/Utility';
 import Button from './Button';
@@ -21,7 +20,7 @@ function Photo({src, text, onClick, metaData, setActive, setShowDisplay, id, sty
         setActive({metaData,
           imageSrc: src,
           event:e});
-        }
+      }
       if(setShowDisplay){
         setShowDisplay('');
       }
@@ -35,12 +34,14 @@ function Photo({src, text, onClick, metaData, setActive, setShowDisplay, id, sty
 }
 
 
-export function DisplayPhoto({data, show, setShow}){
+export function DisplayPhoto({data, show, setShow, afterUpdateCallback, onRemoveCallback}){
   const [focus, setFocus] = useState(false);
   const [modalShow, setShowModal] = useState(false);
-  const image = data;
-  if(!image)
-      return;
+
+  if(!data)
+    return;
+
+  let image = data;
     
   const toggleCaptionEdit = () => {
     if(focus)
@@ -86,6 +87,7 @@ export function DisplayPhoto({data, show, setShow}){
 
     parentElement.innerHTML = inputEl.value;
     setFocus(false)
+    afterUpdateCallback();
   }
   const captureCaptionClick = (e) => {
     if(e){
@@ -126,8 +128,10 @@ export function DisplayPhoto({data, show, setShow}){
       setShow('hidden');
     })
     setTimeout(() => {
-      document.getElementById(photoId).classList.add('hidden');
+      if(onRemoveCallback)
+        onRemoveCallback(data.metaData)
     }, 1000)
+    document.getElementById(photoId).classList.add('hidden');
   }
 
   return (
@@ -140,10 +144,10 @@ export function DisplayPhoto({data, show, setShow}){
       <div className='photo' onClick={captureCaptionClick}>
         <Confirm ShowModal={modalShow} onCancel={cancelDelete} message={`Are you sure you want to delete this photo?`} onConfirm={deletePhoto}/>
         <div className='photo-container'>
-          <img alt={image.imageSrc} src={image.imageSrc}/>
+          <img alt={image?.imageSrc} src={image?.imageSrc}/>
         </div>
-        <div id='image-caption' className='caption'>{image.metaData.caption}</div>
-        <Button onClick={toggleDeletePhoto} styles={'btn-small photo-delete-btn'} title={`delete ${image.metaData.caption}`}><i className="fa-solid fa-trash"></i></Button>
+        <div id='image-caption' className='caption'>{image?.metaData?.caption}</div>
+        <Button onClick={toggleDeletePhoto} styles={'btn-small photo-delete-btn'} title={`delete ${image?.metaData?.caption}`}><i className="fa-solid fa-trash"></i></Button>
       </div>
 
     </div>

@@ -296,9 +296,9 @@
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
-    height: 100%;
+    height: 300px;
     white-space: pre-wrap;
-    overflow: hidden;
+    overflow-y: scroll;
 }
 
 .Photos-List .Photo{
@@ -625,7 +625,7 @@
 
 .new-info{
     position: absolute;
-    z-index: 999;
+    z-index: 98;
     bottom: 0;
     width: 100%;
     margin-bottom: 5px;
@@ -693,6 +693,9 @@
     margin: 0;
     color: #f5f5f5;
     font-weight: 700;
+    background-color: rgba(0, 0, 0,0.8);
+    padding: 2px 5px 2px 5px;
+    border-radius: 5px;
 }
 
 .photo img{
@@ -788,6 +791,7 @@
 }
 
 .input-design .smallFont,
+.input-design .smallerFont,
 .input-design input,
 .input-design textarea,
 .input-design select{
@@ -820,6 +824,10 @@
     border: 2px solid #2e2e2e;
 }
 
+.input-design .smalllerFont:not(select){
+    border: 2px solid #2e2e2e;
+}
+
 .profile-socials{
     background-color: #1a1a1a;
     display: flex;
@@ -836,6 +844,11 @@
 .profile-socials .smallFont{
     font-size: 12px;
 }
+
+.profile-socials .smallerFont{
+    font-size: 10px;
+}
+
 
 .socials-holder{
     transition: all 1s ease-in ;
@@ -897,6 +910,11 @@
     filter: blur(5px);
 }
 
+.transparent-bg{
+    background-color: transparent;
+}
+
+
 
 @keyframes show {
     0%{
@@ -946,6 +964,8 @@
     .dashboard-flexblock{
         min-width: calc(1040px - 300px);
     }
+
+    
 }
 
 @media only screen and (max-width: 500px){

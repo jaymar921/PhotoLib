@@ -1,26 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Photo, { DisplayPhoto } from './Photo'
 import Button from './Button'
-import { APIUpdateAlbum, GetIndividualPhoto, GetMonthYear, GetPhotoInAlbum, LoadPhotosInAlbum, UploadPhotoInAlbum } from '../Utils/DataHelper';
+import { APIUpdateAlbum, GetMonthYear, LoadPhotosInAlbum, UploadPhotoInAlbum } from '../Utils/DataHelper';
 import { IsLoggedIn } from '../Utils/Utility';
 
-function PhotosContainerComponent({currentAlbum}) {
+function PhotosContainerComponent({currentAlbum, setReadySwitch}) {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showImage, setShowImage] = useState('');
   const [hasLoggedIn, setHasLoggedIn] = useState(false);
-  const [activePhoto, setActivePhoto] = useState(null)
-  const [updateToggle, setUpdateToggle] = useState(false)
-  const [LoadPhotos, setLoadPhotos] = useState([]);
+  const [activePhoto, setActivePhoto] = useState(null);
+  const [updateToggle, setUpdateToggle] = useState(false);
   const [photos, updatePhotos] = useState([])
+  const [loading, setIsLoading] = useState(false)
   const photosRef = useRef();
 
   useEffect(() => {
-    const loadPhoto = async () => {
-      setLoadPhotos(await GetPhotoInAlbum(currentAlbum))
-      updatePhotos([])
-    }
+    updatePhotos([])
+    loadUI();
     setHasLoggedIn(IsLoggedIn());
-    loadPhoto();
   }, [currentAlbum])
 
   if(!currentAlbum)
@@ -82,53 +79,49 @@ function PhotosContainerComponent({currentAlbum}) {
     }
   }
 
-  const LoadIndividual = async (val) => {
-    const photoToLoad = val;
-    const photoRetrieved = await GetIndividualPhoto(photoToLoad, currentAlbum);
-    if(!photoRetrieved)
-      return;
+  async function loadUI(){
+    setReadySwitch(false)
+    setIsLoading(true);
+    const photoData = await LoadPhotosInAlbum(currentAlbum);
+    if(currentAlbum && photoData){
+      setShowImage(null)
+      setActivePhoto(null)
+      updatePhotos(photoData.filter(p => p.albumID === currentAlbum.guid));
+    }
+    setIsLoading(false);
+    setReadySwitch(true)
+  }
 
-    photos.push(photoRetrieved)
-    updatePhotos([...photos])
+  async function updateUI(){
+    setHasLoggedIn(IsLoggedIn());
+    updatePhotos([])
+    setTimeout(()=>{
+      loadUI();
+    }, 200)
+  }
+
+  async function removePhotoCallback(photo){
+    console.log(photo)
+    updatePhotos(photos.filter(p => p.photoId !== photo.photoId));
   }
 
   function AnimateLoadPhoto (){
-      let s = photosRef.current;
-      for(let x of s.childNodes){
-          if(!x.id.includes('load-more-photos')){
-              const arr = [...x.classList]
-              if(!arr.includes('showOpacity')){
-                x.classList.add('showOpacity');
-                x.classList.remove('hidden');
-              }
+    let s = photosRef.current;
+    for(let x of s.childNodes){
+        if(!x.id.includes('load-more-photos')){
+            const arr = [...x.classList]
+            if(!arr.includes('showOpacity')){
+              x.classList.add('showOpacity');
+              x.classList.remove('hidden');
+            }
           }
       }
   }
-  
-  async function loadMorePhoto () {
-    for(let i = 0; i < 5; i++){
-      if(!LoadPhotos)
-        return;
-      if(!LoadPhotos.next)
-        return;
-      const val = LoadPhotos.next().value;
-      if(val){
-        await LoadIndividual(val)
-      }
-      else{
-        console.log('nothing else to load')
-      }
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      setTimeout(() => {
-        AnimateLoadPhoto();
-      }, 200)
-    }
-  }
-  
+
 
   return (
-    <div className='Photos-Container'>
-        <DisplayPhoto data={activePhoto} show={showImage} setShow={setShowImage}/>
+    <div id='Photos-Container' className='Photos-Container'>
+        <DisplayPhoto data={activePhoto} show={showImage} setShow={setShowImage} afterUpdateCallback={updateUI} onRemoveCallback={removePhotoCallback}/>
         <NewPhotoModal showModal={showUploadModal} setShowModal={setShowUploadModal} currentAlbum={currentAlbum}/>
         <div className='Title'>
             <div className='info'>
@@ -148,10 +141,15 @@ function PhotosContainerComponent({currentAlbum}) {
         <div ref={photosRef} className='Photos-List'>
         {
           photos.map(photo => {
-            return <Photo key={photo.photoId} styles={'hidden'} src={photo.image} setActive={setActivePhoto} metaData={photo} setShowDisplay={setShowImage}/>
+            /* animation */
+            (async()=>{
+              setTimeout(()=>{
+                AnimateLoadPhoto();
+              },20)
+            })()
+            return <Photo key={photo.photoId} styles={''} src={photo.image} setActive={setActivePhoto} metaData={photo} setShowDisplay={setShowImage}/>
           })
         }
-        <Photo key={'LoadMore'} id={'load-more-photos'} text={'Load More...'} onClick={loadMorePhoto}/>
         {/*
         <Photo src={'./assets/IMG_0013.JPG'}/>
         <Photo src={'./assets/IMG_0002.JPG'}/>
@@ -163,6 +161,9 @@ function PhotosContainerComponent({currentAlbum}) {
         <Photo src={'./assets/IMG_1128.JPG'}/>
         <Photo text={'Load more'} onClick={handleLoadMoreCallback}/>
         */}
+        {
+          loading?<Photo text={<div className="loader"></div>} styles={'transparent-bg'} onClick={()=>{}}/>:""
+        }
         </div>
     </div>
   )
@@ -206,16 +207,20 @@ export function NewPhotoModal({currentAlbum, showModal, setShowModal}){
           <br />
         </div>
       </div>
-      <PreparePhotoUploadModal show={showUpload} payload={payload} currentAlbum={currentAlbum}/>
+      <PreparePhotoUploadModal setShow={setShowUpload} show={showUpload} payload={payload} currentAlbum={currentAlbum}/>
     </>
   )
 }
 
-export function PreparePhotoUploadModal({show, currentAlbum, payload}){
+export function PreparePhotoUploadModal({show, setShow, currentAlbum, payload}){
   const [isLoading, setIsLoading] = useState(false);
   const captions = [];
+  const [files, setFiles] = useState([]);
+  const [waitMessage, setWaitMessage] = useState('')
   
-
+  function setWaiting(msg){
+    setWaitMessage(msg);
+  }
   async function handleUploadPhotos(){
     if(isLoading) return;
     const _payload = {
@@ -224,18 +229,33 @@ export function PreparePhotoUploadModal({show, currentAlbum, payload}){
       captions
     }
     setIsLoading(true);
-    await UploadPhotoInAlbum(_payload);
+    await UploadPhotoInAlbum(_payload, setWaiting);
     setTimeout(()=>{
         setIsLoading(false)
     }, 1000)
   }
 
-  if(!payload)
-    return;
-  const files = [...payload];
+  useEffect(()=>{
+    if(!payload)
+      return;
+    setFiles([...payload]);
+  }, [payload])
 
   
 
+  function handleRemove(_index){
+    let toRemove = null;
+    files.forEach((item, index)=> {
+      if(index===_index){
+        toRemove = item;
+      }
+    })
+    setFiles(files.filter(i => i !== toRemove));
+    if(files.length-1 === 0){
+      console.log('zero')
+      setShow(false);
+    }
+  }
   return(
     <div className={`modal-container ${show?'':'hidden'}`}>
       <div className='modal'>
@@ -245,13 +265,16 @@ export function PreparePhotoUploadModal({show, currentAlbum, payload}){
               
               files.map((item, index) => {
                 captions.push({caption:""})
-                return <PreparePhoto key={Math.floor(Math.random() * 99999)} src={URL.createObjectURL(item)} dataRef={captions[index]}/>
+                return <PreparePhoto key={Math.floor(Math.random() * 99999)} index={index} src={URL.createObjectURL(item)} dataRef={captions[index]} removeCallback={handleRemove}/>
               })
               
             }
             
         </div>
+        <br />
+        <p className='center nopadmar'>{waitMessage}</p>
         <p className='photoCounter'>Number of photo(s): {files.length}</p>
+        <br />
         <Button styles={'center'} onClick={handleUploadPhotos}>
           {isLoading?'Uploading':'Save'}
         </Button>
@@ -261,7 +284,7 @@ export function PreparePhotoUploadModal({show, currentAlbum, payload}){
   )
 }
 
-function PreparePhoto({src, dataRef}){
+function PreparePhoto({src, index, dataRef, removeCallback}){
   const [content, setContent] = useState('');
   const [size, setSize] = useState(0);
 
@@ -285,6 +308,7 @@ function PreparePhoto({src, dataRef}){
             }}></textarea>
             <p className='max-length'>{size}/100</p>
         </div>
+        <Button onClick={()=>{removeCallback(index)}} styles={'btn-small album-TopRight'} title={`Remove Photo`}><i className="fa-solid fa-trash"></i></Button>
       </div>
     </>
   )

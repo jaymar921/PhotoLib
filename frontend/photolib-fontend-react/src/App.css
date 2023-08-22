@@ -46,11 +46,19 @@ body{
   left: 250px;
   z-index: 99;
 }
+
+.album-TopRight{
+  position: absolute;
+  bottom: 290px;
+  left: 250px;
+  z-index: 99;
+}
+
 .top-Right{
   position: absolute;
   top: 15px;
   right: 55px;
-  z-index: 999;
+  z-index: 99;
 }
 
 .photo-delete-btn{
@@ -287,11 +295,11 @@ body{
   }
 
   ::-webkit-scrollbar-thumb{
-    background-color: #191919;
+    background-color: #5e5e5e;
   }
 
   ::-webkit-scrollbar-thumb:hover{
-    background-color: #141414;
+    background-color: #707070;
   }
 
   textarea::-webkit-scrollbar {
@@ -358,7 +366,15 @@ body{
     position: absolute;
     bottom: 40px;
     left: 220px;
-    z-index: 999999;
+    z-index: 99;
+  }
+
+  .album-TopRight{
+    position: absolute;
+    bottom: 250px;
+    right: 20px;
+    left: none;
+    z-index: 99;
   }
 
   .photo-delete-btn{

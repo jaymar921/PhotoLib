@@ -379,7 +379,7 @@ async function ReadStream(reader){
     return imageFile;
 }
 
-export async function UploadPhotoInAlbum(payload){
+export async function UploadPhotoInAlbum(payload, setWaitMessage){
     const {captions, currentAlbum} = payload;
     const images = [...payload.files]
 
@@ -387,6 +387,7 @@ export async function UploadPhotoInAlbum(payload){
 
     let index = 0;
     for(const image of images){
+        setWaitMessage(`Uploading ${index+1} of ${images.length}`)
         let caption = captions[index++].caption;
         if(caption === '')
             caption = '~';
@@ -524,6 +525,10 @@ export const GENERATOR_FUNCTION = function*(arr){
     yield* arr;
 }
 
+export async function GetPhotoInAlbumGENERIC(albumData){
+    return GENERATOR_FUNCTION(await GetPhotoInAlbum(albumData));
+}
+
 export async function GetPhotoInAlbum(albumData){
     const {guid:albumID} = albumData
     // retrieve all photos in album
@@ -538,8 +543,8 @@ export async function GetPhotoInAlbum(albumData){
 
     const retrievedPhotos = apiResJson.photos;
     if(!retrievedPhotos)
-        return GENERATOR_FUNCTION([]);
-    return GENERATOR_FUNCTION(retrievedPhotos);
+        return [];
+    return retrievedPhotos;
 }
 
 export async function GetIndividualPhoto(photo, currentAlbum){
@@ -588,15 +593,14 @@ export async function GetIndividualPhoto(photo, currentAlbum){
             });
 
             photo.image = imageFile;
-    }catch(e){}
+    }catch(e){return null;}
     return photo;
 }
 
-export async function LoadPhotosInAlbum(albumData){
+export async function LoadPhotosInAlbum_NoPhoto(albumData){
     if(!albumData)
-        return GENERATOR_FUNCTION([]);
+        return [];
     const {guid:albumID} = albumData
-
     // retrieve all photos in album
     const apiRes = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo",{
         method: 'GET',
@@ -611,6 +615,30 @@ export async function LoadPhotosInAlbum(albumData){
 
     if(!retrievedPhotos)
         return [];
+
+    return retrievedPhotos;
+}
+
+export async function LoadPhotosInAlbum(albumData){
+    if(!albumData)
+        return [];
+    const {guid:albumID} = albumData
+    // retrieve all photos in album
+    const apiRes = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo",{
+        method: 'GET',
+        headers: {
+            AlbumID : albumID
+        }
+    })
+    
+    const apiResJson = await apiRes.json();
+
+    const retrievedPhotos = apiResJson.photos;
+
+    if(!retrievedPhotos)
+        return [];
+
+    const PhotosList = [];
 
     for(const photo of retrievedPhotos){
         const { photoId, caption } = photo;
@@ -645,7 +673,7 @@ export async function LoadPhotosInAlbum(albumData){
                     //console.log(blob);
         
                     imageFile = URL.createObjectURL(blob);
-                    return
+                    return;
                 }
         
                 //console.log(`Received ${chunks.length} chars so far!`)
@@ -659,10 +687,11 @@ export async function LoadPhotosInAlbum(albumData){
             });
 
             photo.image = imageFile;
+            PhotosList.push(photo);
         }catch(e){}
     }
 
-    return retrievedPhotos;
+    return PhotosList;
 }
 
 export default LoginUserAsync;

@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { CreateNewAlbum, GetMonthYear, LoadPhotosInAlbum, getAlbumImage } from '../Utils/DataHelper';
 import Button, { Radio } from './Button';
 import { GetOfflineUserData, IsLoggedIn } from '../Utils/Utility';
+import { GetPhotoInAlbum } from '../Utils/DataHelper';
 import Confirm from './Confirm';
 import { config } from '../config';
 
-function AlbumComponent({albums, callback, addAlbumCallback, updatePhotos, active}) {
+function AlbumComponent({albums, callback, addAlbumCallback, updatePhotos, active, readySwitch}) {
     const [hasLoggedIn, setHasLoggedIn] = useState(false);
     
     useEffect(()=> {
@@ -19,7 +20,7 @@ function AlbumComponent({albums, callback, addAlbumCallback, updatePhotos, activ
             
             {
                 albums.map(album => {
-                    return <Album key={album.guid} active={active} data={album} callback={callback} updatePhotos={updatePhotos}/>
+                    return <Album key={album.guid} readySwitch={readySwitch} active={active} data={album} callback={callback} updatePhotos={updatePhotos} isLoggedIn={hasLoggedIn}/>
                 })
             }
             
@@ -33,7 +34,7 @@ function AlbumComponent({albums, callback, addAlbumCallback, updatePhotos, activ
   )
 }
 
-export function Album({data, callback, updatePhotos, active}){
+export function Album({data, callback, updatePhotos, active, isLoggedIn, readySwitch}){
     const [img, setImg] = useState(null)
     const [showModal, setShowModal] = useState(false);
     useEffect(()=> {
@@ -69,19 +70,24 @@ export function Album({data, callback, updatePhotos, active}){
         <>
         <Confirm message={`Are you sure you want to delete the Album named "${data.title}"?`} ShowModal={showModal} onCancel={cancelDelete} onConfirm={DeleteConfirmed}/>
         <div className="Album" onClick={(e)=> {
-                callback(data);
-                (async()=>{
-                    const photo = await LoadPhotosInAlbum(data);
-
-                    //updatePhotos(photo);
-                })();
+                if(readySwitch){
+                    callback(data);
+                    (async()=>{
+                        const photo = await LoadPhotosInAlbum(data);
+                        
+                        //updatePhotos(photo);
+                    })();
+                }
             }}>
             
             <div className={`${(active!=='')?(active.guid === data.guid)?"selected":"darkbg":"darkbg"}`}></div>
             <div className='Image-Container'>
                 <img alt='' src={img} />
             </div>
-            <Button onClick={toggleDeleteModal} styles={'btn-small album-Right'} title={`Delete Album\n[${data.title}]`}><i className="fa-solid fa-trash"></i></Button>
+            {
+                isLoggedIn?<Button onClick={toggleDeleteModal} styles={'btn-small album-Right'} title={`Delete Album\n[${data.title}]`}><i className="fa-solid fa-trash"></i></Button>:""
+            }
+            
             <div className='info'>
                 <h2>{data.title}</h2>
                 <p>{GetMonthYear(data.albumState.dateCreated).join(" ")}</p>

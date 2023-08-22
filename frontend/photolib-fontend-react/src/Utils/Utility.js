@@ -45,3 +45,16 @@ export async function GetCountries(){
     return arr;
 }
 
+export function Capitalize(str){
+    let sArr = str.split(' ');
+
+    let newStr = ''
+
+    sArr.forEach(string => {
+        let s = string.toLowerCase();
+        s = s.substring(0,1).toUpperCase() + s.substring(1,) + ' ';
+        newStr += s;
+    })
+    return newStr.trim();
+}
+

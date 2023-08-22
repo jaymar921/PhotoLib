@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../Components.css'
 import Button, { Radio } from './Button'
-import { GetCountries, GetOfflineUserData } from '../Utils/Utility';
+import { Capitalize, GetCountries, GetOfflineUserData } from '../Utils/Utility';
 import {GetUserInfoAsync} from '../Utils/DataHelper'
 import {config} from '../config'
 
@@ -87,8 +87,8 @@ function UpdateProfileModal({show, setShow}){
         setFirstname(userData.firstname);
         setLastname(userData.lastname);
         setBio(userData.bio);
-        setCountry(userData.country!==""?userData.country:'Afghanistan');
-        setPronouns(userData.pronouns!==""?userData.pronouns:'He/Him');
+        setCountry(userData.country!==""?userData.country:'-');
+        setPronouns(userData.pronouns!==""?userData.pronouns:'-');
         const socialsRaw = userData.socials;
         const socialsUpdate = [];
         let i = 1;
@@ -104,8 +104,8 @@ function UpdateProfileModal({show, setShow}){
 
     async function SaveProfile(){
         const userDataPayload = {
-            firstname: Firstname,
-            lastname: Lastname,
+            firstname: Capitalize(Firstname),
+            lastname: Capitalize(Lastname),
             bio: Bio,
             pronouns: Pronouns,
             country: Country,
@@ -184,11 +184,13 @@ function UpdateProfileModal({show, setShow}){
                                 <option value={"He/Him"}>He/Him</option>
                                 <option value={"She/Her"}>She/Her</option>
                                 <option value={"They/Them"}>They/Them</option>
+                                <option value={"-"} disabled={true}>Select pronouns</option>
                             </select>
                         </div>
                         <div className='input-design'>
                             <label>Country</label>
                             <select id='country-set' value={Country} onChange={(e)=>{e.preventDefault();setCountry(e.target.value)}}>
+                                <option value={"-"} disabled={true}>Select a country</option>
                                 {
                                     countriesList.map(country => {
                                         const key = Math.ceil(20000000000 * Math.random());
@@ -208,7 +210,7 @@ function UpdateProfileModal({show, setShow}){
                             Socials.length<=2?"Add Socials":"Maximum"
                         }</Button>
                         <div>
-                            <label>IsPublic</label>
+                            <label>Show profile in public</label>
                             <Radio getValue={SetIsPublic} setValue={IsPublic}></Radio>
                             <br />
                         </div>
@@ -278,7 +280,7 @@ function SocialData({data, socialSetter, socials}){
                     </select>
                 </div>
             </div>
-            <Button onClick={deleteSocialData}><i className="fa-solid fa-trash"></i></Button>
+            <Button onClick={deleteSocialData} styles={'smallerFont'}><i className="fa-solid fa-trash"></i></Button>
         </div>
     )
 }
