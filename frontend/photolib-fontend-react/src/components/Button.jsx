@@ -3,10 +3,10 @@ import '../App.css'
 import '../Components.css'
 
 function Button(props) {
-    const { styles, onClick } = props;
+    const { styles, onClick, title } = props;
     
   return (
-    <button type='button' onClick={(e)=>{onClick(e)}} className={`btn-generic ${styles}`}>{props.children}</button>
+    <button title={title} type='button' onClick={(e)=>{onClick(e)}} className={`btn-generic ${styles}`}>{props.children}</button>
   )
 }
 

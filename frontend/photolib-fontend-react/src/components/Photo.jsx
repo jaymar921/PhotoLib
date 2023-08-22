@@ -3,20 +3,28 @@ import '../Components.css'
 import ViewsComponent from './ViewsComponent';
 import { config } from '../config';
 import { GetOfflineUserData } from '../Utils/Utility';
+import Button from './Button';
+import Confirm from './Confirm';
 
-function Photo({src, text, onClick, metaData, setActive, setShowDisplay}) {
+function Photo({src, text, onClick, metaData, setActive, setShowDisplay, id, styles}) {
+  const {photoId} = metaData??{photoId:false}
   return (
-    <div className='Photo' onClick={(e)=>{
-      if(onClick)
+    <div id={!photoId?id:photoId} className={`Photo ${styles}`} onClick={(e)=>{
+      if(onClick){
         onClick({
           metaData,
           imageSrc: src,
           event:e
         });
+      }
+      if(setActive){
         setActive({metaData,
           imageSrc: src,
           event:e});
+        }
+      if(setShowDisplay){
         setShowDisplay('');
+      }
     }}>
         <div className='Image-Container'>
             <img alt={src} src={src} />    
@@ -29,6 +37,7 @@ function Photo({src, text, onClick, metaData, setActive, setShowDisplay}) {
 
 export function DisplayPhoto({data, show, setShow}){
   const [focus, setFocus] = useState(false);
+  const [modalShow, setShowModal] = useState(false);
   const image = data;
   if(!image)
       return;
@@ -88,6 +97,39 @@ export function DisplayPhoto({data, show, setShow}){
     }
   }
 
+  const toggleDeletePhoto = () => {
+    setShowModal(true);
+  }
+
+  const cancelDelete = () => {
+    setShowModal(false);
+  }
+
+  const deletePhoto = () => {
+    const photoId = data.metaData.photoId;
+    const userData = GetOfflineUserData();
+    
+    if(!photoId)
+      return;
+
+    fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/photo",{
+      method: 'delete',
+      headers:{
+        AuthToken: userData.AuthToken,
+        ImageID: photoId,
+        Path: data.metaData.albumID
+      }
+    })
+    .then(r => r.json())
+    .then(d => {
+      setShowModal(false)
+      setShow('hidden');
+    })
+    setTimeout(() => {
+      document.getElementById(photoId).classList.add('hidden');
+    }, 1000)
+  }
+
   return (
     <div id='show-image-modal' className={`photo-modal ${show}`} onClick={(e)=> {
       if(e.target.id === 'show-image-modal'){
@@ -96,11 +138,12 @@ export function DisplayPhoto({data, show, setShow}){
       }
     }}>
       <div className='photo' onClick={captureCaptionClick}>
+        <Confirm ShowModal={modalShow} onCancel={cancelDelete} message={`Are you sure you want to delete this photo?`} onConfirm={deletePhoto}/>
         <div className='photo-container'>
           <img alt={image.imageSrc} src={image.imageSrc}/>
         </div>
         <div id='image-caption' className='caption'>{image.metaData.caption}</div>
-        
+        <Button onClick={toggleDeletePhoto} styles={'btn-small photo-delete-btn'} title={`delete ${image.metaData.caption}`}><i className="fa-solid fa-trash"></i></Button>
       </div>
 
     </div>

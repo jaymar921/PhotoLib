@@ -65,15 +65,15 @@ function ProfileDashboard() {
   return (
     <>
         {
-          isLoggedIn?<NavComponent />:""
+          isLoggedIn?(<NavComponent />):""
         }
-        <div className='Profile-Dashboard'>
+        <div id='profile-dashboard' className='Profile-Dashboard'>
             <div className='flex-block'>
                 <ProfileComponent UserInfo={userData} />
                 <div className='dashboard-flexblock'>
-                    <AlbumComponent albums={albums} callback={setActiveAlbum} addAlbumCallback={newAlbumCallback} updatePhotos={setPhotos} />
+                    <AlbumComponent albums={albums} active={activeAlbum} callback={setActiveAlbum} addAlbumCallback={newAlbumCallback}/>
                     <NewAlbumModal show={showNewAlbumModal} setShow={setShowNewAlbumModal} userData={userData} token={token}/>
-                    <PhotosContainerComponent currentAlbum={activeAlbum} photos={photos} />
+                    <PhotosContainerComponent currentAlbum={activeAlbum} photos={photos} updatePhotos={setPhotos}/>
                 </div>
             </div>
         </div>

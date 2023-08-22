@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '../App.css';
 import LoginFormComponent from '../components/LoginFormComponent';
 import LoginUserAsync from '../Utils/DataHelper';
@@ -15,7 +15,7 @@ function LoginPage() {
     
     const fetchData = async ({user, pass}) => {
         const [status] = await LoginUserAsync(user, pass);
-        setLoginStatus(status)
+        setLoginStatus(status.includes('Invalid')?"Incorrect Username or Password":status)
     }
     
 

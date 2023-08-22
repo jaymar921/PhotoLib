@@ -387,7 +387,9 @@ export async function UploadPhotoInAlbum(payload){
 
     let index = 0;
     for(const image of images){
-
+        let caption = captions[index++].caption;
+        if(caption === '')
+            caption = '~';
         // prepare the file for upload, call the upload photo api
         const apiRes = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo", {
             method: "POST",
@@ -398,7 +400,7 @@ export async function UploadPhotoInAlbum(payload){
             body: JSON.stringify({
                 "photoId": "00000000-0000-0000-0000-000000000000",
                 "albumID": currentAlbum.guid,
-                "caption": captions[index++].caption,
+                "caption": caption,
                 "dateCreated": new Date().toISOString(),
                 "views": 0
             })
@@ -518,7 +520,81 @@ export async function UploadPhoto(image, path, caption){
     console.log(imageApiJson);
 }
 
+export const GENERATOR_FUNCTION = function*(arr){
+    yield* arr;
+}
+
+export async function GetPhotoInAlbum(albumData){
+    const {guid:albumID} = albumData
+    // retrieve all photos in album
+    const apiRes = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo",{
+        method: 'GET',
+        headers: {
+            AlbumID : albumID
+        }
+    })
+    
+    const apiResJson = await apiRes.json();
+
+    const retrievedPhotos = apiResJson.photos;
+    if(!retrievedPhotos)
+        return GENERATOR_FUNCTION([]);
+    return GENERATOR_FUNCTION(retrievedPhotos);
+}
+
+export async function GetIndividualPhoto(photo, currentAlbum){
+    const { photoId, caption } = photo;
+    if(caption === 'Album Photo')
+        return null;
+    const albumID = currentAlbum.guid;
+        try{
+            // get the photo object
+            const resp = await fetch(config.SERVER_URL_PHOTO_MICROSERVICE+"/Photo/Image",{
+                headers: {
+                    Path: albumID,
+                    PhotoID: photoId
+                }
+            });
+            //console.log(resp)
+            const reader = resp.body.getReader();
+            let chunks = []; 
+        
+            
+            let imageFile;
+            await reader.read().then(function processText({ done, value }) {
+                
+        
+                if (done) {
+                    //console.log('Stream finished. Content received:')
+        
+                    //console.log(chunks);
+        
+        
+                    const blob = new Blob([chunks], { type: "image/png" });
+                    //console.log(blob);
+        
+                    imageFile = URL.createObjectURL(blob);
+                    return
+                }
+        
+                //console.log(`Received ${chunks.length} chars so far!`)
+                // console.log(value);
+                const tempArray = new Uint8Array(chunks.length + value.length);
+                tempArray.set(chunks);
+                tempArray.set(value, chunks.length);
+                chunks = tempArray
+        
+                return reader.read().then(processText)
+            });
+
+            photo.image = imageFile;
+    }catch(e){}
+    return photo;
+}
+
 export async function LoadPhotosInAlbum(albumData){
+    if(!albumData)
+        return GENERATOR_FUNCTION([]);
     const {guid:albumID} = albumData
 
     // retrieve all photos in album

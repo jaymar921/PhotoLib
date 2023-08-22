@@ -86,6 +86,7 @@ function ProfileComponent({UserInfo = new User()}) {
             }}>
                 Copy profile link <i className="fa-solid fa-share"></i>
             </div>
+            <br />
         </div>
     </>
   )

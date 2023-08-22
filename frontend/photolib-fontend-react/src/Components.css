@@ -88,7 +88,7 @@
 .Flex{
     position: relative;
     display: flex;
-    width: 60%;
+    width: 90%;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -238,7 +238,7 @@
     width: 100%;
     height: 100%;
     top: 0;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.7);
 }
 
 .Album .selected{
@@ -247,7 +247,7 @@
     width: 100%;
     height: 100%;
     top: 0;
-    background: linear-gradient(to top, #2f2f2f, rgba(0,0,0,0));
+    background: transparent;
 }
 
 .Album .info .ViewCounter{
@@ -281,6 +281,7 @@
 .Photos-Container .Title .info p{
     font-size: 15px;
     margin-top: 5px;
+    width: 80%;
     font-weight: 500;
 }
 
@@ -408,7 +409,7 @@
 
 
 .loginForm .fields .input-error{
-    background-color: rgb(255, 0, 0, 0.5);
+    background-color: rgb(255, 0, 0, 0.3);
 }
 
 .loginForm .fields .input-error:focus{
@@ -497,6 +498,22 @@
 .loginForm .offset250Btm{
     bottom: 250px;
 }
+
+.loginForm .offset400Btm{
+    bottom: 400px;
+}
+
+.loginForm .offset350Btm{
+    bottom: 350px;
+}
+.loginForm .offset300Btm{
+    bottom: 300px;
+}
+
+.loginForm .offset100Btm{
+    bottom: 190px;
+}
+
 
 
 
@@ -696,10 +713,10 @@
 }
 
 .nav-modal, .update-modal{
-    position: absolute;
+    position: fixed;
     height: 100%;
     width: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.8);
     z-index: 9999;
 }
 .nav-center{
@@ -727,7 +744,7 @@
 }
 
 .update-modal .profile-form{
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -824,9 +841,18 @@
     transition: all 1s ease-in ;
     opacity: 1;
 }
-
+.Photos-List .Photo{
+    transition: all 1s ease-in ;
+    
+}
+.Photos-List .hidden{
+    transition: all 0.2s ease-in ;
+    opacity: 0;
+    transform: scale(0.5);
+}
 .showOpacity{
-    animation: show 1s ease-in;
+    animation: show 0.2s ease-in;
+    transform: scale(1);
 }
 
 .hideOpacity{
@@ -865,6 +891,10 @@
 
 .bld{
     font-weight: 700;
+}
+
+.blur{
+    filter: blur(5px);
 }
 
 
@@ -960,6 +990,10 @@
 
     .Album-Container{
         width: 90%;
+    }
+
+    .Photos-Container .Title .info p{
+        width: 100%;
     }
 
     .photoCounter{

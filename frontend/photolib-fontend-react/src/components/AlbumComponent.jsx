@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CreateNewAlbum, GetMonthYear, LoadPhotosInAlbum, getAlbumImage } from '../Utils/DataHelper';
 import Button, { Radio } from './Button';
-import { IsLoggedIn } from '../Utils/Utility';
+import { GetOfflineUserData, IsLoggedIn } from '../Utils/Utility';
+import Confirm from './Confirm';
+import { config } from '../config';
 
-function AlbumComponent({albums, callback, addAlbumCallback, updatePhotos}) {
+function AlbumComponent({albums, callback, addAlbumCallback, updatePhotos, active}) {
     const [hasLoggedIn, setHasLoggedIn] = useState(false);
-
+    
     useEffect(()=> {
         setHasLoggedIn(IsLoggedIn());
     }, [])
@@ -17,7 +19,7 @@ function AlbumComponent({albums, callback, addAlbumCallback, updatePhotos}) {
             
             {
                 albums.map(album => {
-                    return <Album key={album.guid} data={album} callback={callback} updatePhotos={updatePhotos}/>
+                    return <Album key={album.guid} active={active} data={album} callback={callback} updatePhotos={updatePhotos}/>
                 })
             }
             
@@ -31,8 +33,9 @@ function AlbumComponent({albums, callback, addAlbumCallback, updatePhotos}) {
   )
 }
 
-export function Album({data, callback, updatePhotos}){
+export function Album({data, callback, updatePhotos, active}){
     const [img, setImg] = useState(null)
+    const [showModal, setShowModal] = useState(false);
     useEffect(()=> {
         async function loadAlbumImage(){
             const imageFile = await getAlbumImage(data.guid);
@@ -41,19 +44,44 @@ export function Album({data, callback, updatePhotos}){
 
        loadAlbumImage();
     }, [data.guid])
+
+    function toggleDeleteModal(){
+        setShowModal(true);
+    }
+
+    function cancelDelete(){
+        setShowModal(false);
+    }
+
+    async function DeleteConfirmed(){
+        const userData = GetOfflineUserData();
+        fetch(config.SERVER_URL_ALBUM_MICROSERVICE+'/album',{
+            method: 'DELETE',
+            headers:{
+                AuthToken: userData.AuthToken,
+                AlbumID: data.guid
+            }
+        })
+        window.location.href = '/'
+    }
+
     return (
-        <div className='Album' onClick={(e)=> {
+        <>
+        <Confirm message={`Are you sure you want to delete the Album named "${data.title}"?`} ShowModal={showModal} onCancel={cancelDelete} onConfirm={DeleteConfirmed}/>
+        <div className="Album" onClick={(e)=> {
                 callback(data);
                 (async()=>{
                     const photo = await LoadPhotosInAlbum(data);
 
-                    updatePhotos(photo);
+                    //updatePhotos(photo);
                 })();
             }}>
-            <div className='darkbg'></div>
+            
+            <div className={`${(active!=='')?(active.guid === data.guid)?"selected":"darkbg":"darkbg"}`}></div>
             <div className='Image-Container'>
                 <img alt='' src={img} />
             </div>
+            <Button onClick={toggleDeleteModal} styles={'btn-small album-Right'} title={`Delete Album\n[${data.title}]`}><i className="fa-solid fa-trash"></i></Button>
             <div className='info'>
                 <h2>{data.title}</h2>
                 <p>{GetMonthYear(data.albumState.dateCreated).join(" ")}</p>
@@ -61,6 +89,7 @@ export function Album({data, callback, updatePhotos}){
             </div>
             
         </div>
+        </>
     )
 }
 
@@ -73,6 +102,7 @@ export function NewAlbumModal({show, setShow, userData, token}) {
     const imageRef = useRef();
     const [insertImageP, setInsertImage] = useState('Insert Image');
     const [errorMessage, setErrorMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     function uploadImage(){
         document.getElementById('upload-image-modal').click();
@@ -92,7 +122,8 @@ export function NewAlbumModal({show, setShow, userData, token}) {
             
     }
 
-    function createButtonClicked () {
+    async function createButtonClicked () {
+        if(isLoading) return;
         console.log(`
             IsPublic:    ${isPublic},
             Title:       ${title},
@@ -113,8 +144,11 @@ export function NewAlbumModal({show, setShow, userData, token}) {
             setErrorMessage("Image should be provided");
             return;
         }
-        
-        CreateNewAlbum(userData, token,title, description, isPublic, imageFile)
+        setIsLoading(true);
+        await CreateNewAlbum(userData, token,title, description, isPublic, imageFile);
+        setTimeout(()=>{
+            setIsLoading(false)
+        }, 2000)
     }
   return (
     <div id='modal-container-album' className={`modal-container ${show}`} onClick={(e)=>{
@@ -133,7 +167,7 @@ export function NewAlbumModal({show, setShow, userData, token}) {
                         <br />
                         <label>Description</label>
                         <br />
-                        <textarea value={description} onInput={({target})=>{setDescription(target.value); setErrorMessage("");}}></textarea>
+                        <textarea maxLength={150} value={description} onInput={({target})=>{setDescription(target.value); setErrorMessage("");}}></textarea>
                         <br />
                         <br />
                         <div className='pad-top-50px-nmbl' />
@@ -153,7 +187,7 @@ export function NewAlbumModal({show, setShow, userData, token}) {
                     </div>
                     <div className='block'>
                         <Button onClick={createButtonClicked} styles='btn-center'>
-                            Create
+                            {isLoading?"Creating...":"Create"}
                         </Button>
                     </div>
                     <br />

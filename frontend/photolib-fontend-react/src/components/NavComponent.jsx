@@ -9,6 +9,7 @@ function NavComponent() {
     const [showUpdateModal, setShowUpdateModal] = useState('hidden');
     const showModal = (e) => {
         document.getElementById('nav-modal').classList.remove('hidden')
+        document.getElementById('profile-dashboard').classList.add('blur');
     }
     return (
         <>
@@ -29,6 +30,7 @@ function NavModal({callUpdateModal}){
         if(e.target.id === 'nav-modal'){
             e.target.classList.add('hidden')
             callUpdateModal('hidden')
+            document.getElementById('profile-dashboard').classList.remove('blur');
         }
     }
 
@@ -60,7 +62,7 @@ function UpdateProfileModal({show, setShow}){
     const [Lastname, setLastname] = useState('');
     const [Bio, setBio] = useState('');
     const [Pronouns, setPronouns] = useState('He/Him');
-    const [Country, setCountry] = useState('');
+    const [Country, setCountry] = useState('Afghanistan');
     const [Socials, SetSocials] = useState([]);
     const AnimateSocialsRef = useRef();
 
@@ -85,7 +87,7 @@ function UpdateProfileModal({show, setShow}){
         setFirstname(userData.firstname);
         setLastname(userData.lastname);
         setBio(userData.bio);
-        setCountry(userData.country);
+        setCountry(userData.country!==""?userData.country:'Afghanistan');
         setPronouns(userData.pronouns!==""?userData.pronouns:'He/Him');
         const socialsRaw = userData.socials;
         const socialsUpdate = [];
