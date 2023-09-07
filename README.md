@@ -8,6 +8,13 @@ To run the application, open the project folder where `docker-compose.yml` is lo
 docker-compose up
 ```
 The UI design was created here [Figma link](https://www.figma.com/file/i5lkwBlmqfUhgSMp3QxCD2/Photography-Library?type=design&node-id=0%3A1&mode=design&t=0fMkfCEKCpTLHtsn-1)
+
+## Technology Stacks
+- ASP.NET C#
+- ReactJS
+- SQLite
+- Docker
+
 ## Sample Output
 #### Create new album [Desktop]
 ![Figure](frontend/Documentation/image1.png)
