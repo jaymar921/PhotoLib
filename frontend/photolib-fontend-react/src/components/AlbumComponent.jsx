@@ -177,9 +177,11 @@ export function NewAlbumModal({show, setShow, userData, token}) {
                         <br />
                         <br />
                         <div className='pad-top-50px-nmbl' />
+                        <div className='hidden'>
                         <Radio getValue={setIsPublic}>
                             Public
                         </Radio>
+                        </div>
                         <br />
                     </div>
                 </div>

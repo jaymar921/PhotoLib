@@ -209,7 +209,7 @@ function UpdateProfileModal({show, setShow}){
                         <Button onClick={AddSocials}>{
                             Socials.length<=2?"Add Socials":"Maximum"
                         }</Button>
-                        <div>
+                        <div className='hidden'>
                             <label>Show profile in public</label>
                             <Radio getValue={SetIsPublic} setValue={IsPublic}></Radio>
                             <br />
